@@ -4,9 +4,14 @@
  * This is the model class for table "users".
  *
  * The followings are the available columns in table 'users':
- * @property string $user_id
- * @property string $usesname
+ * @property string $id
+ * @property string $username
  * @property string $password
+ * @property string $email
+ * @property string $profile_pic
+ * @property string $firstname
+ * @property string $surname
+ * @property integer $is_activated
  */
 class User extends CActiveRecord
 {
@@ -36,12 +41,14 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, usesname, password', 'required'),
-			array('user_id', 'length', 'max'=>16),
-			array('usesname, password', 'length', 'max'=>128),
+			array('id, username, password, email, profile_pic, firstname, surname, is_activated', 'required'),
+			array('is_activated', 'numerical', 'integerOnly'=>true),
+			array('id', 'length', 'max'=>36),
+			array('username, password, email', 'length', 'max'=>128),
+			array('firstname, surname', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_id, usesname, password', 'safe', 'on'=>'search'),
+			array('id, username, password, email, profile_pic, firstname, surname, is_activated', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,9 +69,14 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'user_id' => 'User',
-			'usesname' => 'Usesname',
+			'id' => 'User',
+			'username' => 'Username',
 			'password' => 'Password',
+			'email' => 'Email',
+			'profile_pic' => 'Profile Pic',
+			'firstname' => 'Firstname',
+			'surname' => 'Surname',
+			'is_activated' => 'Is Activated',
 		);
 	}
 
@@ -79,12 +91,37 @@ class User extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('usesname',$this->usesname,true);
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->compare('profile_pic',$this->profile_pic,true);
+		$criteria->compare('firstname',$this->firstname,true);
+		$criteria->compare('surname',$this->surname,true);
+		$criteria->compare('is_activated',$this->is_activated);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function validatePassword($password) {
+        return CPasswordHelper::verifyPassword($password,$this->password);
+    }
+    
+    public function hashPassword($password) {
+        return CPasswordHelper::hashPassword($password);
+    }
+    
+    public function beforeSave() {
+        if(parent::beforeSave()) {
+            if(($this->isNewRecord) || isset($this->password)) {
+            	$this->id = Yii::app()->db->createCommand('select UUID()')->queryScalar();
+                $newPassword = $this->hashPassword( $this->password );
+                $this->password = $newPassword;
+            }
+            return true;
+        } else 
+            return false;
+    }  
 }

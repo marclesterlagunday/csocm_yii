@@ -6,16 +6,20 @@
 	<meta name="language" content="en" />
 
 	<!-- blueprint CSS framework -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" /> -->
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" /> -->
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
 	<![endif]-->
 
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" /> -->
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" /> -->
 
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" /> -->
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/others.css" />
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
@@ -27,8 +31,8 @@
 $this->widget(
     'booster.widgets.TbNavbar',
     array(
-    	'type' => 'inverse',
-        'brand' => Yii::app()->name,
+    	// 'type' => 'inverse',
+        'brand' => 'Computer Studies',
         'collapse' => true,
         'fixed' => true,
     	'fluid' => true,
@@ -37,8 +41,38 @@ $this->widget(
                 'class' => 'booster.widgets.TbMenu',
                 'type' => 'navbar',
                 'items' => array(
-                    array('label' => 'Home', 'url' => array('/site/index'), 'active' => true),
-                    array('label' => 'Warehouse', 'url' => '#',),
+                    array('label' => 'Announcement', 'url' => array('/announcement/index') ),
+                    array(
+                        'label' => 'Users Management',
+                        'url' => '#',
+                        'visible'=>!Yii::app()->user->isGuest,
+                        'items' => array(
+                            array('label' => 'Student', 'url' => array('/maintenance/student'), 'visible'=>!Yii::app()->user->isGuest),
+                            array('label' => 'Instructor', 'url' => array('/maintenance/instructor'), 'visible'=>!Yii::app()->user->isGuest),
+                            '---',
+                            array('label' => 'Admin', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
+                        )
+                    ),
+                    array(
+                        'label' => 'School Management',
+                        'url' => '#',
+                        'visible'=>!Yii::app()->user->isGuest,
+                        'items' => array(
+                            array('label' => 'Class', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
+                            array('label' => 'Subject', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
+                            '---',
+                        )
+                    ),
+                    array(
+                        'label' => 'Maintenance',
+                        'url' => '#',
+                        'visible'=>!Yii::app()->user->isGuest,
+                        'items' => array(
+                            array('label' => 'Semester', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
+                            array('label' => 'School Year', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
+                            '---',
+                        )
+                    ),
                     array(
                         'label' => Yii::app()->user->name,
                         'url' => '#',
@@ -62,12 +96,12 @@ $this->widget(
 
 	<?php echo $content; ?>
 
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by <a href="www.rxsi.net/">Rx Solutions Inc.</a><br/>
+	<!-- <div id="footer">
+		Copyright &copy; <?php //echo date('Y'); ?> by <a href="www.rxsi.net/">Rx Solutions Inc.</a><br/>
 		All Rights Reserved.<br/>
-	</div> <!-- footer -->
+	</div>  -->
 
-</div><!-- page -->
+</div>
 
 </body>
 </html>

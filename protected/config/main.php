@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'DWMS',
+	'name'=>'CSOCM',
 
 	// preloading 'log' component
 	'preload'=>array(
@@ -17,7 +17,8 @@ return array(
 	),
 
 	'aliases' => array(
-        'booster' => realpath(__DIR__ . '/../extensions/booster'), // change this if necessary        
+		'bootstrap' => realpath(__DIR__ . '/../extensions/booster'),
+        'booster' => realpath(__DIR__ . '/../extensions/booster'),       
     ),
 
 	// autoloading model and component classes
@@ -101,7 +102,7 @@ return array(
 		// uncomment the following to use a MySQL database
 
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=classmanagerv2',
+			'connectionString' => 'mysql:host=localhost;dbname=classmanager_v3',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
@@ -133,6 +134,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'it@redcat.com',
+		'adminEmail'=>'it@dkgb.com',
 	),
 );
