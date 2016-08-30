@@ -134,7 +134,7 @@ class TbNavbar extends CWidget {
 		
 		echo CHtml::openTag('nav', $this->htmlOptions);
 		echo '<div class="' . $this->getContainerCssClass() . '">';
-		
+		echo '<div class="container">';
 		echo '<div class="navbar-header">';
 		if($this->collapse) {
 			$this->controller->widget('booster.widgets.TbButton', array(
@@ -171,7 +171,7 @@ class TbNavbar extends CWidget {
 				}
 			}
 		}
-		echo '</div></div></nav>';
+		echo '</div></div></div></nav>';
 	}
 
 	/**
