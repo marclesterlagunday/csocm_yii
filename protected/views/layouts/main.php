@@ -41,41 +41,20 @@ $this->widget(
                 'class' => 'booster.widgets.TbMenu',
                 'type' => 'navbar',
                 'items' => array(
-                    array('label' => 'Announcement', 'url' => array('/announcement/index') ),
                     array(
-                        'label' => 'Users Management',
+                        'label' => '',
+                        'icon'=>'fa fa-users',
                         'url' => '#',
                         'visible'=>!Yii::app()->user->isGuest,
                         'items' => array(
-                            array('label' => 'Student', 'url' => array('/maintenance/student'), 'visible'=>!Yii::app()->user->isGuest),
-                            array('label' => 'Instructor', 'url' => array('/maintenance/instructor'), 'visible'=>!Yii::app()->user->isGuest),
-                            '---',
-                            array('label' => 'Admin', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
-                        )
-                    ),
-                    array(
-                        'label' => 'School Management',
-                        'url' => '#',
-                        'visible'=>!Yii::app()->user->isGuest,
-                        'items' => array(
-                            array('label' => 'Class', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
-                            array('label' => 'Subject', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
-                            '---',
-                        )
-                    ),
-                    array(
-                        'label' => 'Maintenance',
-                        'url' => '#',
-                        'visible'=>!Yii::app()->user->isGuest,
-                        'items' => array(
-                            array('label' => 'Semester', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
-                            array('label' => 'School Year', 'url' => array('/maintenance/admins'), 'visible'=>!Yii::app()->user->isGuest),
-                            '---',
+                            array('label' => 'Student', 'url' => array('/user/student'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
+                            array('label' => 'Instructor', 'url' => array('/user/instructor'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
                         )
                     ),
                     array(
                         'label' => Yii::app()->user->name,
                         'url' => '#',
+                        'icon'=>'fa fa-lock',
                         'items' => array(
                             array('label' => 'Profile', 'url' => '#', 'visible'=>!Yii::app()->user->isGuest),
                             array('label'=>'Register', 'url'=>'', 'visible'=>Yii::app()->user->isGuest),

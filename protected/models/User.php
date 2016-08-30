@@ -11,7 +11,6 @@
  * @property string $profile_pic
  * @property string $firstname
  * @property string $surname
- * @property integer $is_activated
  */
 class User extends CActiveRecord
 {
@@ -41,14 +40,14 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, username, password, email, profile_pic, firstname, surname, is_activated', 'required'),
-			array('is_activated', 'numerical', 'integerOnly'=>true),
+			array('id, username, password, email, profile_pic, firstname, surname', 'required'),
+			array('', 'numerical', 'integerOnly'=>true),
 			array('id', 'length', 'max'=>36),
 			array('username, password, email', 'length', 'max'=>128),
 			array('firstname, surname', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, username, password, email, profile_pic, firstname, surname, is_activated', 'safe', 'on'=>'search'),
+			array('id, username, password, email, profile_pic, firstname, surname', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,6 +59,7 @@ class User extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'Authassignment'=>array(self::HAS_ONE, 'Authassignment', array( 'userid' => 'id' )),
 		);
 	}
 
@@ -76,7 +76,6 @@ class User extends CActiveRecord
 			'profile_pic' => 'Profile Pic',
 			'firstname' => 'Firstname',
 			'surname' => 'Surname',
-			'is_activated' => 'Is Activated',
 		);
 	}
 
@@ -98,7 +97,21 @@ class User extends CActiveRecord
 		$criteria->compare('profile_pic',$this->profile_pic,true);
 		$criteria->compare('firstname',$this->firstname,true);
 		$criteria->compare('surname',$this->surname,true);
-		$criteria->compare('is_activated',$this->is_activated);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function student()
+	{
+		$criteria=new CDbCriteria;
+
+		$criteria->alias = 'User';
+		$criteria->with[] = 'Authassignment';
+		$criteria->together = true;
+
+		$criteria->addCondition( "Authassignment.itemname = 'Student'" );
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
