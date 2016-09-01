@@ -3,9 +3,9 @@
 $this->widget(
     'booster.widgets.TbExtendedGridView',
     array(
-        'id' => 'student_list',
+        'id' => 'instructor_list',
         'type' => 'striped bordered condensed',
-        'dataProvider' => $vm->user->student(),
+        'dataProvider' => $vm->user->instructor(),
         // 'template' => "{items}",
         'columns' => array(
             array(

@@ -1,4 +1,4 @@
-<h2>Student Maintenance</h2>
+<h2>Instructor Maintenance</h2>
 <div class="row">
 	<div class="col-sm-12">
 		<?php $this->widget(
@@ -9,7 +9,7 @@
 		        'icon' => 'fa fa-plus',
 		        'htmlOptions' => array(
 		            'data-toggle' => 'modal',
-		            'data-target' => '#studentModal',
+		            'data-target' => '#instructorModal',
 		        ),
 		    )
 		); ?>
@@ -18,7 +18,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		<?php
-			$this->renderPartial('_student_list', array(
+			$this->renderPartial('_instructor_list', array(
 				'vm'=>$vm,
 			));
 		?>
@@ -27,7 +27,7 @@
 
 <?php $this->beginWidget(
     'booster.widgets.TbModal',
-    array('id' => 'studentModal')
+    array('id' => 'instructorModal')
 ); ?>
 
 <div class="modal-header">
@@ -37,7 +37,7 @@
 
 <div class="modal-body">
     <?php
-    	$this->renderPartial('_student_form', array(
+    	$this->renderPartial('_instructor_form', array(
     		'vm'=>$vm,
     	));
     ?>
@@ -66,27 +66,27 @@
 <?php $this->endWidget(); ?>
 
 <?php
-	$save_student = Yii::app()->createUrl( "user/savestudent" );
+	$save_instructor = Yii::app()->createUrl( "user/saveinstructor" );
 	$success = 'success';
 	$error = 'error';
 
-	Yii::app()->clientScript->registerScript('student', "
+	Yii::app()->clientScript->registerScript('instructor', "
 
 		$(document).ready( function() {
-	        $('#student_form').submit( function( e ) {
+	        $('#instructor_form').submit( function( e ) {
 	            e.preventDefault();
 			});
 	    });
 
-	    $('#studentModal').on('shown.bs.modal', function(){
+	    $('#instructorModal').on('shown.bs.modal', function(){
 	    	$('#User_username').focus();
 	    });
 
 		$(document).on('click', '#save_btn', function(){
             $.ajax({
                 type        : 'POST', 
-                url         : '{$save_student}',
-                data        : $('#student_form').serialize(),
+                url         : '{$save_instructor}',
+                data        : $('#instructor_form').serialize(),
                 cache       : false,
                 success     : function( data ) {
                     var json = $.parseJSON( data );
@@ -94,13 +94,13 @@
                     if(json.retVal == '{$success}')
                     {
                         $.notify(json.retMessage, json.retVal);
-                        $('#student_list').yiiGridView('update', {
+                        $('#instructor_list').yiiGridView('update', {
 				        	data: $(this).serialize()
 				        });
-				        $( '#student_form' ).each(function(){
+				        $( '#instructor_form' ).each(function(){
 						    this.reset();
 						});
-				        $('#studentModal').modal('hide');
+				        $('#instructorModal').modal('hide');
                     }
                     else if(json.retVal == '{$error}')
                     {

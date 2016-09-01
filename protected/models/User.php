@@ -10,7 +10,11 @@
  * @property string $email
  * @property string $profile_pic
  * @property string $firstname
+ * @property string $middlename
  * @property string $surname
+ * @property string $age
+ * @property string $gender
+ * @property string $contact_no
  */
 class User extends CActiveRecord
 {
@@ -40,7 +44,7 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, username, password, email, profile_pic, firstname, surname', 'required'),
+			array('username, password, email, firstname, middlename, surname, age, gender, contact_no', 'required'),
 			array('', 'numerical', 'integerOnly'=>true),
 			array('id', 'length', 'max'=>36),
 			array('username, password, email', 'length', 'max'=>128),
@@ -74,8 +78,12 @@ class User extends CActiveRecord
 			'password' => 'Password',
 			'email' => 'Email',
 			'profile_pic' => 'Profile Pic',
-			'firstname' => 'Firstname',
-			'surname' => 'Surname',
+			'firstname' => 'First Name',
+			'middlename' => 'Middle Name',
+			'surname' => 'Last Name',
+			'age' => 'Age',
+			'gender' => 'Gender',
+			'contact_no' => 'Contact No',
 		);
 	}
 
@@ -118,6 +126,21 @@ class User extends CActiveRecord
 		));
 	}
 
+	public function instructor()
+	{
+		$criteria=new CDbCriteria;
+
+		$criteria->alias = 'User';
+		$criteria->with[] = 'Authassignment';
+		$criteria->together = true;
+
+		$criteria->addCondition( "Authassignment.itemname = 'Instructor'" );
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 	public function validatePassword($password) {
         return CPasswordHelper::verifyPassword($password,$this->password);
     }
@@ -129,7 +152,6 @@ class User extends CActiveRecord
     public function beforeSave() {
         if(parent::beforeSave()) {
             if(($this->isNewRecord) || isset($this->password)) {
-            	$this->id = Yii::app()->db->createCommand('select UUID()')->queryScalar();
                 $newPassword = $this->hashPassword( $this->password );
                 $this->password = $newPassword;
             }

@@ -2,7 +2,7 @@
 	$form = $this->beginWidget(
 		'booster.widgets.TbActiveForm',
 		array(
-			'id' => 'student_form',
+			'id' => 'instructor_form',
 			'type' => 'horizontal',
 		)
 	);
@@ -17,48 +17,6 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
-<hr/>
-<?php $data = CHtml::listData( Course::model()->findAll(), 'course_id', 'description'); ?>
-<?php echo $form->select2Group(
-	$vm->user_course,
-	'course',
-	array(
-		'wrapperHtmlOptions' => array(
-			'class' => 'col-sm-5',
-		),
-		'widgetOptions' => array(
-			'asDropDownList' => true,
-			'data' => $data,
-			'options' => array(
-				// 'tags' => $data,
-				'placeholder' => 'Course',
-				 // 'width' => '40%', 
-				'tokenSeparators' => array(',', ' ')
-			)
-		)
-	)
-);?>
-
-<?php $data = CHtml::listData( SchoolYear::model()->findAll(), 'sy_id', 'description'); ?>
-<?php echo $form->select2Group(
-	$vm->user_course,
-	'sy',
-	array(
-		'wrapperHtmlOptions' => array(
-			'class' => 'col-sm-5',
-		),
-		'widgetOptions' => array(
-			'asDropDownList' => true,
-			'data' => $data,
-			'options' => array(
-				// 'tags' => $data,
-				'placeholder' => 'SY',
-				 // 'width' => '40%', 
-				'tokenSeparators' => array(',', ' ')
-			)
-		)
-	)
-);?>
 <hr/>
 <?php echo $form->textFieldGroup($vm->user, 'firstname', array(
 	'widgetOptions' => array(
