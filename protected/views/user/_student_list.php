@@ -12,6 +12,7 @@ $this->widget(
                 'name' => '#',
                 'header' => '#',
                 'value' => '$row + 1',
+                'htmlOptions'=>array('style'=>'width: 60px'),
             ),
             array(
                 'name' => 'Name', 
@@ -22,6 +23,7 @@ $this->widget(
             array(
                 'name' => 'Action',
                 'header' => 'Action',
+                'htmlOptions'=>array('style'=>'width: 80px'),
                 // 'type' => 'raw',
                 'value' =>  function($data){
                                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -29,7 +31,7 @@ $this->widget(
                                         'buttons'=>array(
                                             array('icon'=>'fa fa-bars', 'type'=>'', 'items'=>array
                                             (
-                                                array('label'=>'View', 'url'=>array('/user/view&id=' . $data->id)),
+                                                // array('label'=>'View', 'url'=>array('/user/view&id=' . $data->id)),
                                                 array('label'=>'Edit', 'url'=>array('/user/edit&id=' . $data->id)),
                                                 array('label'=>'Delete', 'url'=>array('/user/delete&id=' . $data->id)),
                                             ),

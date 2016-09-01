@@ -12,6 +12,7 @@ $this->widget(
                 'name' => '#',
                 'header' => '#',
                 'value' => '$row + 1',
+                'htmlOptions'=>array('style'=>'width: 60px'),
             ),
             array(
                 'name' => 'Name', 
@@ -22,6 +23,7 @@ $this->widget(
             array(
                 'name' => 'Action',
                 'header' => 'Action',
+                'htmlOptions'=>array('style'=>'width: 80px'),
                 // 'type' => 'raw',
                 'value' =>  function($data){
                                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
