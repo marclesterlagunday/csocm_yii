@@ -23,30 +23,38 @@ $this->widget(
             array(
                 'name' => 'Action',
                 'header' => 'Action',
-                'htmlOptions'=>array('style'=>'width: 80px'),
+                'htmlOptions'=>array('style'=>'width: 120px'),
                 // 'type' => 'raw',
                 'value' =>  function($data){
-                                $this->widget('bootstrap.widgets.TbButtonGroup', array(
-                                        'size'=>'mini',
-                                        'buttons'=>array(
-                                            array('icon'=>'fa fa-bars', 'type'=>'', 'items'=>array
-                                            (
-                                                array('label'=>'View', 'url'=>array('/user/view&id=' . $data->id)),
-                                                array('label'=>'Edit', 'url'=>array('/user/edit&id=' . $data->id)),
-                                                array('label'=>'Delete', 'url'=>array('/user/delete&id=' . $data->id)),
-                                            ),
-                                        ),
-                                    ),
-                                ));
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => '',
+                                        'size' => 'small',
+                                        'icon' => 'fa fa-eye',
+                                        'htmlOptions' => array('class'=>'view_btn',),
+                                    )
+                                ); echo ' ';
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => '',
+                                        'size' => 'small',
+                                        'icon' => 'fa fa-pencil',
+                                        'htmlOptions' => array('class'=>'edit_btn',),
+                                    )
+                                ); echo ' ';
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => '',
+                                        'size' => 'small',
+                                        'icon' => 'fa fa-trash',
+                                        'htmlOptions' => array('class'=>'delete_btn',),
+                                    )
+                                );
                             },
             ),
-            // array(
-            //     'htmlOptions' => array('nowrap' => 'nowrap'),
-            //     'class' => 'booster.widgets.TbButtonColumn',
-            //     'viewButtonUrl' => null,
-            //     'updateButtonUrl' => null,
-            //     'deleteButtonUrl' => null,
-            // )
         )
     )
 );
