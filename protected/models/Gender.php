@@ -1,20 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "user_courses".
+ * This is the model class for table "genders".
  *
- * The followings are the available columns in table 'user_courses':
- * @property integer $user_course_id
- * @property integer $user
- * @property integer $course
- * @property integer $sy
+ * The followings are the available columns in table 'genders':
+ * @property integer $gender_id
+ * @property string $description
  */
-class UserCourse extends CActiveRecord
+class Gender extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return UserCourse the static model class
+	 * @return Gender the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -26,7 +24,7 @@ class UserCourse extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'user_courses';
+		return 'genders';
 	}
 
 	/**
@@ -37,11 +35,11 @@ class UserCourse extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user, course, sy', 'required'),
-			array('user, course, sy', 'numerical', 'integerOnly'=>true),
+			array('description', 'required'),
+			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_course_id, user, course, sy', 'safe', 'on'=>'search'),
+			array('gender_id, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,8 +51,6 @@ class UserCourse extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Course'=>array(self::HAS_ONE, 'Course', array( 'course_id' => 'course' )),
-			'SchoolYear'=>array(self::HAS_ONE, 'SchoolYear', array( 'sy_id' => 'sy' )),
 		);
 	}
 
@@ -64,10 +60,8 @@ class UserCourse extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'user_course_id' => 'User Course',
-			'user' => 'User',
-			'course' => 'Course',
-			'sy' => 'SY',
+			'gender_id' => 'Gender',
+			'description' => 'Description',
 		);
 	}
 
@@ -82,10 +76,8 @@ class UserCourse extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('user_course_id',$this->user_course_id);
-		$criteria->compare('user',$this->user);
-		$criteria->compare('course',$this->course);
-		$criteria->compare('sy',$this->sy);
+		$criteria->compare('gender_id',$this->gender_id);
+		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -7,6 +7,18 @@
 		)
 	);
 ?>
+<div class="row">
+	<div class="col-sm-offset-4">
+		<div class="img-container">
+		    <img src=<?php echo ($vm->user->profile_pic != '') ? $vm->user->profile_pic : "./images/user.png" ?> alt="" height="90" width="90" class="" id="profile_pic">
+		    <?php echo $form->hiddenField($vm->user,'profile_pic',array('class'=>'input-style', 'id'=>'img_uri')); ?>
+		    <label class="btn btn-primary">
+	            Browse&hellip; <input type="file" id="file" style="display: none;">
+	        </label>
+		</div>
+	</div>
+</div>
+<br />
 <?php echo $form->textFieldGroup($vm->user, 'username', array(
 	'widgetOptions' => array(
 		'htmlOptions' => array('autocomplete'=>"off")

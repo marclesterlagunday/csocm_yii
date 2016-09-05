@@ -33,13 +33,19 @@ $this->widget(
                 'items' => array(
                     array(
                         'label' => '',
+                        'icon'=>'fa fa-book',
+                        'url' => array('/lecture/lecture'),
+                        'visible'=>Yii::app()->user->checkAccess('Instructor'),
+                    ),
+                    array(
+                        'label' => '',
                         'icon'=>'fa fa-users',
                         'url' => '#',
-                        'visible'=>!Yii::app()->user->isGuest,
+                        'visible'=>Yii::app()->user->checkAccess('Admin'),
                         'items' => array(
                             array('label' => 'Student', 'url' => array('/user/student'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
                             array('label' => 'Instructor', 'url' => array('/user/instructor'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
-                        )
+                        ),
                     ),
                     array(
                         'label' => Yii::app()->user->name,  'visible'=>!Yii::app()->user->isGuest,

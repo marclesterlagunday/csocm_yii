@@ -65,14 +65,41 @@
                     )
                 ); ?>
             </div>
+            <?php $this->endWidget(); ?>
+
+            <?php $this->beginWidget(
+                'booster.widgets.TbModal',
+                array('id' => 'viewInstructorModal')
+            ); ?>
+
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>View Instructor</h4>
+            </div>
+
+            <div class="modal-body">
+                Loading . . . .
+            </div>
+
+            <div class="modal-footer">
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Close',
+                        'url' => '#',
+                        'htmlOptions' => array('data-dismiss' => 'modal'),
+                    )
+                ); ?>
+            </div>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 </div>
 
-<?php $this->endWidget(); ?>
 
 <?php
 	$save_instructor = Yii::app()->createUrl( "user/saveinstructor" );
+    $view_instructor = Yii::app()->createUrl( "user/viewinstructor" );
 	$success = 'success';
 	$error = 'error';
 
@@ -83,6 +110,21 @@
 	            e.preventDefault();
 			});
 	    });
+
+        $(document).on('change','#file',function() {
+          var preview = document.querySelector('#profile_pic');
+          var file    = document.querySelector('#file').files[0];
+          var reader  = new FileReader();
+
+          reader.addEventListener('load', function () {
+            preview.src = reader.result;
+            $('#img_uri').val(preview.src);
+          }, false);
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        });
 
 	    $('#instructorModal').on('shown.bs.modal', function(){
 	    	$('#User_username').focus();
@@ -107,6 +149,32 @@
 						    this.reset();
 						});
 				        $('#instructorModal').modal('hide');
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', '.view_btn', function(){
+            var values = {
+              'instructor' : $(this).attr('ref'),
+            }
+
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$view_instructor}',
+                data        : values,
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#viewInstructorModal .modal-body').html(json.retMessage);
+                        $('#viewInstructorModal').modal();
                     }
                     else if(json.retVal == '{$error}')
                     {

@@ -64,6 +64,7 @@ class User extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'Authassignment'=>array(self::HAS_ONE, 'Authassignment', array( 'userid' => 'id' )),
+			'Gender'=>array(self::HAS_ONE, 'Gender', array( 'gender_id' => 'gender' )),
 		);
 	}
 

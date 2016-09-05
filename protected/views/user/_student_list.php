@@ -15,6 +15,13 @@ $this->widget(
                 'htmlOptions'=>array('style'=>'width: 60px'),
             ),
             array(
+              'class'=>'bootstrap.widgets.TbImageColumn',
+              'imagePathExpression'=>'($data->profile_pic != "") ? $data->profile_pic : "./images/user.png"',
+              'imageOptions'=>array('width'=>'34px', 'height' => '34px','class'=> 'circle'),
+              'usePlaceKitten'=>false,
+              'htmlOptions'=>array('style'=>'width: 45px'),
+            ),
+            array(
                 'name' => 'Name', 
                 'header' => 'Name',
                 'value' => 'ucfirst($data->surname) . ", " . ucfirst($data->firstname) . " " . strtoupper(substr($data->middlename, 0, 1)) . "."',
@@ -32,7 +39,10 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-eye',
-                                        'htmlOptions' => array('class'=>'view_btn',),
+                                        'htmlOptions' => array(
+                                            'class'=>'view_btn',
+                                            'ref'=>$data->id,
+                                        ),
                                     )
                                 ); echo ' ';
                                 $this->widget(
@@ -41,7 +51,10 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-pencil',
-                                        'htmlOptions' => array('class'=>'edit_btn',),
+                                        'htmlOptions' => array(
+                                            'class'=>'edit_btn',
+                                            'ref'=>$data->id,
+                                        ),
                                     )
                                 ); echo ' ';
                                 $this->widget(
@@ -50,7 +63,10 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-trash',
-                                        'htmlOptions' => array('class'=>'delete_btn',),
+                                        'htmlOptions' => array(
+                                            'class'=>'delete_btn',
+                                            'ref'=>$data->id,
+                                        ),
                                     )
                                 );
                             },

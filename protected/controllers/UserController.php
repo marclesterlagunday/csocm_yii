@@ -16,9 +16,12 @@ class UserController extends Controller
 			array('allow', 
 				'actions'=>array(
 					'student',
+					'studentform',
 					'savestudent',
+					'viewstudent',
 					'instructor',
 					'saveinstructor',
+					'viewinstructor',
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -164,6 +167,80 @@ class UserController extends Controller
 			else
 			{
 				$retMessage = "Please Fill Up Required Fields";
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
+	}
+
+	public function actionViewStudent()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$vm = (object) array();
+		$vm->user = new User('search');
+		$vm->user_course = new UserCourse('search');
+
+		if(isset($_POST['student']))
+		{
+			$id = $_POST['student'];
+			$findUser = User::model()->findByPk($id);
+
+			if(isset($findUser))
+			{
+				$vm->user = $findUser;
+
+				$findCourse = UserCourse::model()->findByAttributes(array('user'=>$vm->user->id));
+
+				if(isset($findCourse))
+				{
+					$vm->user_course = $findCourse;
+				}
+
+				$view = $this->renderPartial('_view_student', array(
+							'vm'=>$vm,
+						), true, true);
+
+				$retVal = "success";
+				$retMessage = $view;
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
+	}
+
+	public function actionViewInstructor()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$vm = (object) array();
+		$vm->user = new User('search');
+
+		if(isset($_POST['instructor']))
+		{
+			$id = $_POST['instructor'];
+			$findUser = User::model()->findByPk($id);
+
+			if(isset($findUser))
+			{
+				$vm->user = $findUser;
+
+				$view = $this->renderPartial('_view_instructor', array(
+							'vm'=>$vm,
+						), true, true);
+
+				$retVal = "success";
+				$retMessage = $view;
 			}
 		}
 
