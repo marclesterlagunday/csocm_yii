@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'announcement':
  * @property string $announcement_id
+ * @property string $title
  * @property string $message
  * @property string $posted_by
  * @property string $defined_class
@@ -38,11 +39,13 @@ class Announcement extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('announcement_id, message, posted_by, defined_class, posted_date_time', 'required'),
-			array('announcement_id, posted_by, defined_class', 'length', 'max'=>16),
+			array('announcement_id, title, message, posted_by, defined_class, posted_date_time', 'required'),
+			array('announcement_id', 'length', 'max'=>36),
+			array('title', 'length', 'max'=>128),
+			array('posted_by, defined_class', 'length', 'max'=>16),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('announcement_id, message, posted_by, defined_class, posted_date_time', 'safe', 'on'=>'search'),
+			array('announcement_id, title, message, posted_by, defined_class, posted_date_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +67,7 @@ class Announcement extends CActiveRecord
 	{
 		return array(
 			'announcement_id' => 'Announcement',
+			'title' => 'Title',
 			'message' => 'Message',
 			'posted_by' => 'Posted By',
 			'defined_class' => 'Defined Class',
@@ -83,6 +87,7 @@ class Announcement extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('announcement_id',$this->announcement_id,true);
+		$criteria->compare('title',$this->title,true);
 		$criteria->compare('message',$this->message,true);
 		$criteria->compare('posted_by',$this->posted_by,true);
 		$criteria->compare('defined_class',$this->defined_class,true);

@@ -47,6 +47,17 @@ $this->widget(
                             array('label' => 'Instructor', 'url' => array('/user/instructor'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
                         ),
                     ),
+					array(
+                        'label' => '',
+                        'icon'=>'fa fa-cog',
+                        'url' => '#',
+                        'visible'=>Yii::app()->user->checkAccess('Admin'),
+                        'items' => array(
+                            array('label' => 'Course', 'url' => array('/maintenance/course'), 'visible'=>Yii::app()->user->checkAccess('Admin')),                            
+							array('label' => 'Subject', 'url' => array('/maintenance/subject'), 'visible'=>Yii::app()->user->checkAccess('Admin')),                            
+							array('label' => 'School Year', 'url' => array('/maintenance/Schoolyear'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
+                        ),
+                    ),
                     array(
                         'label' => Yii::app()->user->name,  'visible'=>!Yii::app()->user->isGuest,
                         'url' => '#',

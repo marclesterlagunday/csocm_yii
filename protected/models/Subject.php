@@ -1,13 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "subjects".
+ * This is the model class for table "subject".
  *
- * The followings are the available columns in table 'subjects':
- * @property string $subject_id
- * @property string $subject_code
+ * The followings are the available columns in table 'subject':
+ * @property integer $id
  * @property string $description
- * @property string $created_date
  */
 class Subject extends CActiveRecord
 {
@@ -26,7 +24,7 @@ class Subject extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'subjects';
+		return 'subject';
 	}
 
 	/**
@@ -37,12 +35,11 @@ class Subject extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('subject_id, subject_code, description, created_date', 'required'),
-			array('subject_id', 'length', 'max'=>16),
-			array('subject_code, description', 'length', 'max'=>128),
+			array('description', 'required'),
+			array('description', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('subject_id, subject_code, description, created_date', 'safe', 'on'=>'search'),
+			array('id, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,10 +60,8 @@ class Subject extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'subject_id' => 'Subject',
-			'subject_code' => 'Subject Code',
+			'id' => 'ID',
 			'description' => 'Description',
-			'created_date' => 'Created Date',
 		);
 	}
 
@@ -81,10 +76,8 @@ class Subject extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('subject_id',$this->subject_id,true);
-		$criteria->compare('subject_code',$this->subject_code,true);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('description',$this->description,true);
-		$criteria->compare('created_date',$this->created_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
