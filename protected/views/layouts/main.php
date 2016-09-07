@@ -55,7 +55,8 @@ $this->widget(
                         'items' => array(
                             array('label' => 'Course', 'url' => array('/maintenance/course'), 'visible'=>Yii::app()->user->checkAccess('Admin')),                            
 							array('label' => 'Subject', 'url' => array('/maintenance/subject'), 'visible'=>Yii::app()->user->checkAccess('Admin')),                            
-							array('label' => 'School Year', 'url' => array('/maintenance/Schoolyear'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
+							array('label' => 'School Year', 'url' => array('/maintenance/Schoolyear'), 'visible'=>Yii::app()->user->checkAccess('Admin')),	
+							array('label' => 'Rooms', 'url' => array('/maintenance/rooms'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
                         ),
                     ),
                     array(

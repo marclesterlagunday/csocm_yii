@@ -21,6 +21,8 @@ class MaintenanceController extends Controller
 					'SaveSubject',
 					'SchoolYear',
 					'SaveSchoolYear',
+					'Rooms',
+					'SaveRoom'
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -30,7 +32,7 @@ class MaintenanceController extends Controller
 			),
 		);
 	}
-
+	//course controller
 	public function actionCourse()
 	{
 		$vm = (object) array();
@@ -85,7 +87,7 @@ class MaintenanceController extends Controller
 				'retMessage' => $retMessage,
 			));
 	}
-	
+	// subject controller
 	public function actionSubject()
 	{
 		$vm = (object) array();
@@ -140,7 +142,7 @@ class MaintenanceController extends Controller
 				'retMessage' => $retMessage,
 			));
 	}
-	
+	// school year controller
 	public function actionSchoolYear()
 	{
 		$vm = (object) array();
@@ -182,6 +184,62 @@ class MaintenanceController extends Controller
 				else
 				{
 					$retMessage = "School Year Already Exist";
+				}
+			}
+			else
+			{
+				$retMessage = "Please Fill Up Required Fields";
+			}
+		}
+		$this->renderPartial('/json/json_ret', 
+			array(
+				'retVal' => $retVal,
+				'retMessage' => $retMessage,
+			));
+	}
+	
+	//room controller
+	public function actionRooms()
+	{
+		$vm = (object) array();
+		$vm->room = new Room('search');
+		// $vm->user_course = new UserCourse('search');
+		
+		$this->render('room',array(
+			'vm'=>$vm,
+		));
+	}
+	
+	public function actionSaveRoom()
+	{
+		$vm = (object) array();
+		$vm->room = new Room('search');
+		
+		$retVal = "error";
+		$retMessage = "Error";
+		
+		if(isset($_POST['Room']))
+		{
+			$vm->room->attributes = $_POST['Room'];
+			
+			if(trim($vm->room->description) != '')
+			{
+				$findSubject = Room::model()->findByAttributes(array('description' => $vm->room->description));
+				if(!isset($findSubject))
+				{
+					if($vm->room->save())
+					{
+						$retVal = "success";
+						$retMessage = "Room Saved";	
+					}
+					else
+					{
+						$retMessage = "Unable To Save Room";
+					}
+				}
+				else
+				{
+					$retMessage = "Room Already Exist";
 				}
 			}
 			else
