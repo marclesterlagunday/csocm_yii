@@ -92,20 +92,4 @@ class ClassDay extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
-	public function classday()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria=new CDbCriteria;
-
-		// $criteria->compare('class_day_id',$this->class_day_id);
-		// $criteria->compare('class',$this->class);
-		// $criteria->compare('day',$this->day);
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
 }

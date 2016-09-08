@@ -104,7 +104,7 @@ class ClassController extends Controller
 	{
 		$vm = (object) array();
 		$vm->class_student = new ClassStudent('search');
-		$vm->class_day = new ClassDay('search');
+		$vm->user = new User('search');
 
 		if(trim($id) != '')
 		{
@@ -114,7 +114,13 @@ class ClassController extends Controller
 			{
 				$vm->class = $findClass;
 				$vm->class_student->class = $findClass->class_id;
-				$vm->class_day->class = $findClass->class_id;
+
+				$findClassDays = ClassDay::model()->findAll(array("condition"=>"class = {$findClass->class_id}"));
+
+				if($findClassDays > 0)
+				{
+					$vm->class_day = $findClassDays;
+				}
 			}
 		}
 
@@ -122,4 +128,6 @@ class ClassController extends Controller
 			'vm' => $vm,
 		));
 	}
+
+
 }
