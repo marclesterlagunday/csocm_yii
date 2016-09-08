@@ -18,6 +18,7 @@ class ClassController extends Controller
 					'class',
 					'saveclass',
 					'viewclass',
+					'savestudentsclass',
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -122,11 +123,66 @@ class ClassController extends Controller
 					$vm->class_day = $findClassDays;
 				}
 			}
+			else
+			{
+				$vm->class_student->class = 0;
+			}
 		}
 
 		$this->render('viewclass', array(
 			'vm' => $vm,
 		));
+	}
+
+	public function actionSaveStudentsClass()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$vm = (object) array();
+
+		if(count($_POST['students']) > 0 && trim($_POST['id']) != '')
+        {
+        	$class_id = $_POST['id'];
+        	$students_list = $_POST['students'];
+
+        	$retMessage = "Already Exist : ";
+
+        	$counter = -1;
+
+        	foreach($students_list as $student)
+        	{
+        		$counter++;
+
+        		if($counter == count($students_list))
+        		{
+        			$retVal = "success";
+        		}
+        		else
+        		{
+        			$findStudent = ClassStudent::model()->findByAttributes(array('student'=>$student, 'class'=>$class_id));
+	        		$findUser = User::model()->findByPk($student);
+
+	        		if(!isset($findStudent))
+	        		{
+	        			$vm->class_students = new ClassStudent();
+			            $vm->class_students->class = $class_id;
+			            $vm->class_students->student = $student;
+			            $vm->class_students->save();
+	        		}
+	        		else
+	        		{
+	        			$retMessage .= ucfirst($findUser->surname) . ", ";
+	        		}
+        		}
+        	}
+        }
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
 	}
 
 

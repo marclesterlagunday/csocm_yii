@@ -4,18 +4,21 @@
       		<h4 class="alert alert-info"><b>CLASS : </b><?php echo (isset($vm->class)) ? $vm->class->Subject->description : "Null" ; ?> - ( <?php echo (isset($vm->class)) ? date("h:i A", strtotime($vm->class->time_start)) : "Null"; ?> - <?php echo (isset($vm->class)) ? date("h:i A", strtotime($vm->class->time_end)) : "Null"; ?> ) <b> BY : </b>
       		<?php echo (isset($vm->class)) ? ucfirst($vm->class->Instructor->firstname) . " " . ucfirst($vm->class->Instructor->surname) : "Null"; ?> - 
             <?php
-                if(count($vm->class_day) > 0)
+                if(isset($vm->class_day))
                 {
-                    $counter = 0;
-                    foreach($vm->class_day as $class_day)
+                    if(count($vm->class_day) > 0)
                     {
-                        $counter++;
-
-                        echo $class_day->Day->description;
-
-                        if(count($vm->class_day) != $counter)
+                        $counter = 0;
+                        foreach($vm->class_day as $class_day)
                         {
-                            echo " / ";
+                            $counter++;
+
+                            echo $class_day->Day->description;
+
+                            if(count($vm->class_day) != $counter)
+                            {
+                                echo " / ";
+                            }
                         }
                     }
                 }
@@ -69,7 +72,7 @@
 
 <div class="modal-header">
     <a class="close" data-dismiss="modal">&times;</a>
-    <h4>Create New</h4>
+    <h4>Add Students</h4>
 </div>
 
 <div class="modal-body">
@@ -84,19 +87,50 @@
     <?php $this->widget(
         'booster.widgets.TbButton',
         array(
-            'context' => 'primary',
-            'label' => 'Save',
+            'label' => 'Cancel',
             'url' => '#',
-            'htmlOptions' => array('id' => 'save_btn'),
-        )
-    ); ?>
-    <?php $this->widget(
-        'booster.widgets.TbButton',
-        array(
-            'label' => 'Close',
-            'url' => '#',
-            'htmlOptions' => array('data-dismiss' => 'modal'),
+            'htmlOptions' => array('data-dismiss' => 'modal', 'class' => 'close_btn'),
         )
     ); ?>
 </div>
 <?php $this->endWidget(); ?>
+
+<?php
+    $savestudentsclass  = Yii::app()->createUrl( "class/savestudentsclass" );
+    $success = 'success';
+    $error = 'error';
+    $id = $_GET["id"];
+
+    Yii::app()->clientScript->registerScript('classstudent', " 
+
+        function saveStudentsClass(values)
+        {
+            $.ajax({
+                type: 'POST',
+                url: '{$savestudentsclass}',
+                data: {'students':values, 'id': {$id}},
+                dataType:'json',
+                success: function(data){
+                    var json = data;
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#class_student_list').yiiGridView('update', {
+                            data: $(this).serialize()
+                        });
+                        $('#classStudentModal').modal('hide');
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $('#class_student_list').yiiGridView('update', {
+                            data: $(this).serialize()
+                        });
+                        $.notify(json.retMessage, json.retVal);
+                        $('#classStudentModal').modal('hide');
+                    }
+                }
+            });
+        }
+
+    ", CClientScript::POS_HEAD);
+?>
