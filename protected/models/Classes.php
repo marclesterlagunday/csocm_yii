@@ -44,7 +44,7 @@ class Classes extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('subject, sy, instructor, time_start, time_end', 'required'),
+			array('subject, room, sy, instructor, time_start, time_end', 'required'),
 			array('subject, room, sy, semester, instructor, created_by', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -61,6 +61,7 @@ class Classes extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'Subject'=>array(self::HAS_ONE, 'Subject', array( 'id' => 'subject' )),
+			'Room'=>array(self::HAS_ONE, 'Room', array( 'id' => 'room' )),
 			'Instructor'=>array(self::HAS_ONE, 'User', array( 'id' => 'instructor' )),
 		);
 	}

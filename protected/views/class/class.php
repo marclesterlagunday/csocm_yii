@@ -5,7 +5,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                
+                <div class="alert alert-info">Today's Class - ( <?php echo date("M d, Y"); ?> ) </div>
             </div>
         </div>
         <div class="row">

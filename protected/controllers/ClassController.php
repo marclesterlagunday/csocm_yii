@@ -17,6 +17,7 @@ class ClassController extends Controller
 				'actions'=>array(
 					'class',
 					'saveclass',
+					'viewclass',
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -56,7 +57,7 @@ class ClassController extends Controller
 
 			if($vm->class->subject != '' && $vm->class->sy != '' && $vm->class->instructor != '' && $vm->class->subject )
 			{
-				if($vm->class->time_start < $vm->class->time_end)
+				if(date("H:i", strtotime($vm->class->time_start)) < date("H:i", strtotime($vm->class->time_end)))
 				{
 					if($vm->class->save())
 					{
@@ -97,5 +98,28 @@ class ClassController extends Controller
             'retVal' => $retVal,
             'retMessage' => $retMessage,
         ));
+	}
+
+	public function actionViewClass($id)
+	{
+		$vm = (object) array();
+		$vm->class_student = new ClassStudent('search');
+		$vm->class_day = new ClassDay('search');
+
+		if(trim($id) != '')
+		{
+			$findClass = Classes::model()->findByPk($id);
+
+			if(isset($findClass))
+			{
+				$vm->class = $findClass;
+				$vm->class_student->class = $findClass->class_id;
+				$vm->class_day->class = $findClass->class_id;
+			}
+		}
+
+		$this->render('viewclass', array(
+			'vm' => $vm,
+		));
 	}
 }

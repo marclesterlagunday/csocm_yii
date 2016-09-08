@@ -29,6 +29,27 @@
 	)
 );?>
 
+<?php $data = CHtml::listData( Room::model()->findAll(), 'id', 'description'); ?>
+<?php echo $form->select2Group(
+	$vm->class,
+	'room',
+	array(
+		'wrapperHtmlOptions' => array(
+			'class' => 'col-sm-5',
+		),
+		'widgetOptions' => array(
+			'asDropDownList' => true,
+			'data' => $data,
+			'options' => array(
+				// 'tags' => $data,
+				'placeholder' => 'Room',
+				 // 'width' => '40%', 
+				'tokenSeparators' => array(',', ' ')
+			)
+		)
+	)
+);?>
+
 <?php $data = CHtml::listData( SchoolYear::model()->findAll(), 'sy_id', 'description'); ?>
 <?php echo $form->select2Group(
 	$vm->class,
