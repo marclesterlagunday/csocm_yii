@@ -154,11 +154,7 @@ class ClassController extends Controller
         	{
         		$counter++;
 
-        		if($counter == count($students_list))
-        		{
-        			$retVal = "success";
-        		}
-        		else
+        		if($counter != count($students_list))
         		{
         			$findStudent = ClassStudent::model()->findByAttributes(array('student'=>$student, 'class'=>$class_id));
 	        		$findUser = User::model()->findByPk($student);
@@ -169,6 +165,7 @@ class ClassController extends Controller
 			            $vm->class_students->class = $class_id;
 			            $vm->class_students->student = $student;
 			            $vm->class_students->save();
+			            $retVal = "success";
 	        		}
 	        		else
 	        		{

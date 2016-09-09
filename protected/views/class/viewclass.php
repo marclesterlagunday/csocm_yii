@@ -119,6 +119,7 @@
                             data: $(this).serialize()
                         });
                         $('#classStudentModal').modal('hide');
+                        $.notify('Successfully Added', json.retVal);
                     }
                     else if(json.retVal == '{$error}')
                     {
