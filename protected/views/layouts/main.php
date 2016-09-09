@@ -33,6 +33,12 @@ $this->widget(
                 'items' => array(
                     array(
                         'label' => '',
+                        'icon'=>'fa fa-bullhorn',
+                        'url' => array('/announcement/announcement'),
+                        'visible'=>Yii::app()->user->checkAccess('Instructor'),
+                    ),
+                    array(
+                        'label' => '',
                         'icon'=>'fa fa-book',
                         'url' => array('/lecture/lecture'),
                         'visible'=>Yii::app()->user->checkAccess('Instructor'),

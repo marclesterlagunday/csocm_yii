@@ -39,7 +39,7 @@ class Announcement extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('announcement_id, title, message, posted_by, defined_class, posted_date_time', 'required'),
+			array('title, message, defined_class', 'required'),
 			array('announcement_id', 'length', 'max'=>36),
 			array('title', 'length', 'max'=>128),
 			array('posted_by, defined_class', 'length', 'max'=>16),
@@ -97,4 +97,15 @@ class Announcement extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function beforeSave() {
+        if(parent::beforeSave()) {
+            if(($this->isNewRecord)) {
+            	$this->posted_by = Yii::app()->user->id;
+                $this->posted_date_time = date('Y-m-d H:i:s');
+            }
+            return true;
+        } else 
+            return false;
+    }
 }
