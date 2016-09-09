@@ -27,50 +27,26 @@ $this->widget(
                 'value' => 'ucfirst($data->Student->surname) . ", " . ucfirst($data->Student->firstname) . " " . strtoupper(substr($data->Student->middlename, 0, 1)) . "."',
                 'sortable'=> false,
             ),
-            // array(
-            //     'name' => 'Action',
-            //     'header' => 'Action',
-            //     'htmlOptions'=>array('style'=>'width: 120px'),
-            //     // 'type' => 'raw',
-            //     'value' =>  function($data){
-            //                     $this->widget(
-            //                         'booster.widgets.TbButton',
-            //                         array(
-            //                             'label' => '',
-            //                             'size' => 'small',
-            //                             'icon' => 'fa fa-eye',
-            //                             'htmlOptions' => array(
-            //                                 'class'=>'view_btn',
-            //                                 'ref'=>$data->id,
-            //                             ),
-            //                         )
-            //                     ); echo ' ';
-            //                     $this->widget(
-            //                         'booster.widgets.TbButton',
-            //                         array(
-            //                             'label' => '',
-            //                             'size' => 'small',
-            //                             'icon' => 'fa fa-pencil',
-            //                             'htmlOptions' => array(
-            //                                 'class'=>'edit_btn',
-            //                                 'ref'=>$data->id,
-            //                             ),
-            //                         )
-            //                     ); echo ' ';
-            //                     $this->widget(
-            //                         'booster.widgets.TbButton',
-            //                         array(
-            //                             'label' => '',
-            //                             'size' => 'small',
-            //                             'icon' => 'fa fa-trash',
-            //                             'htmlOptions' => array(
-            //                                 'class'=>'delete_btn',
-            //                                 'ref'=>$data->id,
-            //                             ),
-            //                         )
-            //                     );
-            //                 },
-            // ),
+            array(
+                'name' => 'Action',
+                'header' => 'Action',
+                'htmlOptions'=>array('style'=>'width: 40px'),
+                // 'type' => 'raw',
+                'value' =>  function($data){
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => '',
+                                        'size' => 'small',
+                                        'icon' => 'fa fa-times',
+                                        'htmlOptions' => array(
+                                            'class'=>'remove_btn',
+                                            'ref'=>$data->class_student_id,
+                                        ),
+                                    )
+                                );
+                            },
+            ),
         )
     )
 );

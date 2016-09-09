@@ -19,6 +19,7 @@ class ClassController extends Controller
 					'saveclass',
 					'viewclass',
 					'savestudentsclass',
+					'uploadlectureclass',
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -106,6 +107,8 @@ class ClassController extends Controller
 		$vm = (object) array();
 		$vm->class_student = new ClassStudent('search');
 		$vm->user = new User('search');
+		$vm->class_lecture = new ClassLecture('search');
+		$vm->lecture = new Lecture('search');
 
 		if(trim($id) != '')
 		{
@@ -115,6 +118,7 @@ class ClassController extends Controller
 			{
 				$vm->class = $findClass;
 				$vm->class_student->class = $findClass->class_id;
+				$vm->class_lecture->class = $findClass->class_id;
 
 				$findClassDays = ClassDay::model()->findAll(array("condition"=>"class = {$findClass->class_id}"));
 
@@ -182,5 +186,61 @@ class ClassController extends Controller
         ));
 	}
 
+	public function actionUploadLectureClass()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$vm = (object) array();
+		$vm->lecture = new Lecture;
+
+		if(isset($_POST['Lecture']))
+		{
+			$vm->lecture->attributes = $_POST['Lecture'];
+			$vm->lecture->class = $_POST['Lecture']['class'];
+
+			$file = CUploadedFile::getInstance($vm->lecture,'filename');
+
+			if($file != '')
+			{
+				$extName = $file->getExtensionName();
+				$vm->lecture->filename = $vm->lecture->title . "." . $extName ;
+
+				$findLecture = Lecture::model()->findByAttributes(array('title'=>$vm->lecture->title));
+
+				if(!isset($findLecture))
+				{
+					if($vm->lecture->save())
+					{
+						$$vm->lecture->saveAs( $setting->description . $vm->lecture->filename);
+
+						$vm->class_lecture = new ClassLecture();
+						$vm->class_lecture->class = $vm->lecture->class;
+						$vm->class_lecture->lecture = $vm->lecture->lecture_id;
+
+						if($vm->class_lecture->save())
+						{
+							$retVal = 'success';
+							$retMessage = 'Successfully Saved';
+						}
+					}
+				}
+				else
+				{
+					$retMessage = 'Someone Already Used "' . $vm->lecture->title . '" As Title';
+				}
+			}
+			else
+			{
+				$retMessage = 'Please Select File To Upload';
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
+	}
 
 }

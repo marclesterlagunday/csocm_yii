@@ -59,7 +59,24 @@
     	</div>
     	<div class="col-sm-4">
     		<div class="well">
-	    		
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Add Lecture',
+                        'context' => 'primary',
+                        'icon' => 'fa fa-plus',
+                        'htmlOptions' => array(
+                            'data-toggle' => 'modal',
+                            'data-target' => '#classLectureModal',
+                        ),
+                    )
+                ); ?>
+                <br/>
+	    		<?php
+                    $this->renderPartial('_class_lecture', array(
+                        'vm' => $vm,
+                    ));
+                ?>
     		</div>
     	</div>
     </div>
@@ -95,13 +112,53 @@
 </div>
 <?php $this->endWidget(); ?>
 
+<?php $this->beginWidget(
+    'booster.widgets.TbModal',
+    array('id' => 'classLectureModal')
+); ?>
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Add Lecture</h4>
+</div>
+
+<div class="modal-body">
+    <?php
+        $this->renderPartial('_class_lecture_form', array(
+            'vm'=>$vm,
+        ));
+    ?>
+</div>
+
+<div class="modal-footer">
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'context' => 'primary',
+            'label' => 'Upload',
+            'url' => '#',
+            'htmlOptions' => array('id' => 'upload_btn'),
+        )
+    ); ?>
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'label' => 'Cancel',
+            'url' => '#',
+            'htmlOptions' => array('data-dismiss' => 'modal', 'class' => 'close_btn'),
+        )
+    ); ?>
+</div>
+<?php $this->endWidget(); ?>
+
 <?php
     $savestudentsclass  = Yii::app()->createUrl( "class/savestudentsclass" );
+    $uploadlectureclass = Yii::app()->createUrl( "class/uploadlectureclass" );
     $success = 'success';
     $error = 'error';
     $id = $_GET["id"];
 
-    Yii::app()->clientScript->registerScript('classstudent', " 
+    Yii::app()->clientScript->registerScript('classstudent', "
 
         function saveStudentsClass(values)
         {
@@ -132,6 +189,33 @@
                 }
             });
         }
+
+        $(document).on('click', '#upload_btn', function(){
+
+            $('#Lecture_class').val({$id});
+
+            data = new FormData($('#class_lecture_form')[0]);
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$uploadlectureclass}',
+                data    : data,
+                processData: false,
+                contentType: false,
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            });
+        });
 
     ", CClientScript::POS_HEAD);
 ?>
