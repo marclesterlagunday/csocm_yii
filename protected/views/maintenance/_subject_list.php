@@ -41,7 +41,10 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-pencil',
-                                        'htmlOptions' => array('class'=>'edit_btn',),
+                                        'htmlOptions' => array(
+											'class'=>'edit_btn',
+											'ref'=>$data->id,
+										),
                                     )
                                 ); echo ' ';
                                 $this->widget(
@@ -50,7 +53,7 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-trash',
-                                        'htmlOptions' => array('class'=>'delete_btn',),
+                                        'htmlOptions' => array('class'=>'delete_btn','ref'=>$data->id,),
                                     )
                                 );
                             },
