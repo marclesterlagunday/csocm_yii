@@ -13,7 +13,7 @@
 <?php $data = CHtml::listData( Classes::model()->findAll(), 'class_id', 'subject'); ?>
 <?php echo $form->select2Group(
 	$vm->announcement,
-	'define_class',
+	'defined_class',
 	array(
 		'wrapperHtmlOptions' => array(
 			'class' => 'col-sm-5',

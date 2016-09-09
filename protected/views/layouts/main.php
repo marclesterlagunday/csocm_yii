@@ -32,10 +32,16 @@ $this->widget(
                 'htmlOptions' => array('class' => 'navbar-right'),
                 'items' => array(
                     array(
-                        'label' => '',
+                        'label' => 'Announcements',
                         'icon'=>'fa fa-bullhorn',
                         'url' => array('/announcement/announcement'),
                         'visible'=>Yii::app()->user->checkAccess('Instructor'),
+                    ),
+                     array(
+                        'label' => 'Announcements',
+                        'icon'=>'fa fa-bullhorn',
+                        'url' => array('/announcement/viewannouncement'),
+                        'visible'=>Yii::app()->user->checkAccess('Student'),
                     ),
                     array(
                         'label' => '',

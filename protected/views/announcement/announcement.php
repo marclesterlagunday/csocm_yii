@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h2>Lecture</h2>
+            <h2>Post Announcement</h2>
             <div class="row">
             	<div class="col-sm-12">
             		<?php $this->widget(
@@ -20,7 +20,11 @@
             </div>
             <div class="row">
             	<div class="col-sm-12">
-            		
+            		<?php
+                        $this->renderPartial('_announcement_thumbgroup', array(
+                            'vm' => $vm,
+                    ));
+                ?>
             	</div>
             </div>
 
@@ -31,7 +35,7 @@
 
             <div class="modal-header">
                 <a class="close" dafta-dismiss="modal">&times;</a>
-                <h4>Create New</h4>
+                <h4>Post Announcement</h4>
             </div>
 
             <div class="modal-body">
