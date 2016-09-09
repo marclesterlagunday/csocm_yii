@@ -2,16 +2,16 @@
 	$form = $this->beginWidget(
 		'booster.widgets.TbActiveForm',
 		array(
-			'id' => 'course_form_edit',
+			'id' => 'subject_form_edit',
 			'type' => 'horizontal',
 		)
 	);
 ?>
 
-<?php echo $form->textFieldGroup($vm->course, 'description', array(
+<?php echo $form->textFieldGroup($vm->subject, 'description', array(
 	'widgetOptions' => array(
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
- <?php echo $form->hiddenField($vm->course,'course_id'); // hidden target?>
+ <?php echo $form->hiddenField($vm->subject,'id'); // hidden target?>
 <?php $this->endWidget(); ?>

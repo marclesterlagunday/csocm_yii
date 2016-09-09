@@ -35,7 +35,7 @@
 			
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">&times;</a>
-                <h4>Create New Subject</h4>
+                <h4>Create New</h4>
             </div>
 
             <div class="modal-body">
@@ -78,15 +78,11 @@
 			
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">&times;</a>
-                <h4>Edit subject</h4>
+                <h4>Edit Subject</h4>
             </div>
 
             <div class="modal-body">
-                <?php
-                	$this->renderPartial('_subject_form', array(
-                		'vm'=>$vm,
-                	));
-                ?>
+                Loading . . . .
             </div>
 
             <div class="modal-footer">
@@ -95,8 +91,46 @@
                     array(
                         'context' => 'primary',
                         'label' => 'Save',
-                        'url' => '#',
                         'htmlOptions' => array('id' => 'save_edit_btn'),
+                        'url' => '#',
+                    )
+                ); ?>
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Close',
+                        'url' => '#',
+                        'htmlOptions' => array('data-dismiss' => 'modal'),
+                    )
+                ); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endWidget(); ?>
+
+<?php $this->beginWidget(
+                'booster.widgets.TbModal',
+                array('id' => 'deletesubjectModal')
+            ); ?>
+			
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>Delete Subject</h4>
+            </div>
+
+            <div class="modal-body">
+                Loading..
+            </div>
+
+            <div class="modal-footer">
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'context' => 'primary',
+                        'label' => 'Yes',
+                        'htmlOptions' => array('id' => 'delete_btn'),
+                        'url' => '#',
                     )
                 ); ?>
                 <?php $this->widget(
@@ -117,6 +151,10 @@
 
 <?php
 	$save_newsubject = Yii::app()->createUrl( "Maintenance/savesubject" );
+	$edit_subject = Yii::app()->createUrl( "Maintenance/Editsubject" );
+	$view_subject = Yii::app()->createUrl( "Maintenance/viewsubject" );
+	$viewd_subject = Yii::app()->createUrl( "Maintenance/viewdsubject" );
+	$delete_subject = Yii::app()->createUrl( "Maintenance/deletesubject" );
 	$success = 'success';
 	$error = 'error';
 
@@ -128,7 +166,7 @@
 			});
 	    });
 
-	    $('#studentModal').on('shown.bs.modal', function(){
+	    $('#subjectModal').on('shown.bs.modal', function(){
 	    	$('#subject_description').focus();
 	    });
 
@@ -150,7 +188,7 @@
 				        $( '#subject_form' ).each(function(){
 						    this.reset();
 						});
-				        $('#studentModal').modal('hide');
+				        $('#subjectModal').modal('hide');
                     }
                     else if(json.retVal == '{$error}')
                     {
@@ -161,11 +199,112 @@
         });
 		$(document).on('click', '.edit_btn', function(){
             var values = {
-              'student' : $(this).attr('ref'),
-            }
-                        $('#editsubjectModal.modal-body');
+              'subject' : $(this).attr('ref'),
+            }  
+			$.ajax({
+                type        : 'POST', 
+                url         : '{$view_subject}',
+                data        : values,
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#editsubjectModal .modal-body').html(json.retMessage);
                         $('#editsubjectModal').modal();
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
             
 		})
+		
+		$(document).on('click', '#save_edit_btn', function(){
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$edit_subject}',
+                data        : $('#subject_form_edit').serialize(),
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                        $('#subject_list').yiiGridView('update', {
+				        	data: $(this).serialize()
+				        });
+				        $( '#subject_form_edit' ).each(function(){
+						    this.reset();
+						});
+				        $('#subjectModal').modal('hide');
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
+        });
+		
+		$(document).on('click', '.delete_btn', function(){
+		var values = {
+			'subject' : $(this).attr('ref'),
+		}
+		
+			$.ajax({
+                type        : 'POST', 
+                url         : '{$viewd_subject}',
+                data        : values,
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#deletesubjectModal .modal-body').html(json.retMessage);
+                        $('#deletesubjectModal').modal();
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
+		
+		})
+		
+		
+		$(document).on('click', '#delete_btn', function(){
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$delete_subject}',
+                data        : $('#subject_form_delete').serialize(),
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                        $('#subject_list').yiiGridView('update', {
+				        	data: $(this).serialize()
+				        });
+				        $( '#subject_form_delete' ).each(function(){
+						    this.reset();
+						});
+				        $('#deletesubjectModal').modal('hide');
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
+        });
 	");
 ?>
