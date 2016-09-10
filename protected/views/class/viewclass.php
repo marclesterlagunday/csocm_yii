@@ -208,6 +208,10 @@
                     if(json.retVal == '{$success}')
                     {
                         $.notify(json.retMessage, json.retVal);
+                        $('#class_lecture_list').yiiGridView('update', {
+                            data: $(this).serialize()
+                        });
+                        $('#classLectureModal').modal('hide');
                     }
                     else if(json.retVal == '{$error}')
                     {

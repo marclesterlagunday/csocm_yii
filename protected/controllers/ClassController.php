@@ -212,7 +212,7 @@ class ClassController extends Controller
 				{
 					if($vm->lecture->save())
 					{
-						$$vm->lecture->saveAs( $setting->description . $vm->lecture->filename);
+						$file->saveAs( "lectures/" . $vm->lecture->filename);
 
 						$vm->class_lecture = new ClassLecture();
 						$vm->class_lecture->class = $vm->lecture->class;

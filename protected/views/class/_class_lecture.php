@@ -32,9 +32,12 @@ $this->widget(
                                         'label' => '',
                                         'size' => 'small',
                                         'icon' => 'fa fa-download',
+                                        'buttonType' =>'link',
+                                        'url'=>'lectures/' . $data->Lecture->filename,
                                         'htmlOptions' => array(
                                             'class'=>'view_btn',
                                             'ref'=>$data->class_lecture_id,
+                                            'target'=>'_blank',
                                         ),
                                     )
                                 ); echo ' ';
