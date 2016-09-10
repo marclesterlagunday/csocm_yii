@@ -55,8 +55,8 @@ $this->widget(
                         'url' => '#',
                         'visible'=>!Yii::app()->user->isGuest,
                         'items' => array(
-                            array('label' => "Todays Classes", 'url' => array('/class/class'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
-                            array('label' => 'Manage Class', 'url' => array('/class/manage'), 'visible'=>Yii::app()->user->checkAccess('Admin')),
+                            array('label' => "Todays Classes", 'url' => array('/class/class'), 'visible'=>!Yii::app()->user->isGuest),
+                            array('label' => 'Manage Class', 'url' => array('/class/manage'), 'visible'=>!Yii::app()->user->isGuest),
                         ),
                     ),
                     array(

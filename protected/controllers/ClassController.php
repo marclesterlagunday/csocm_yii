@@ -23,6 +23,28 @@ class ClassController extends Controller
                 ),
 				'roles'=>array('Admin'),
 			),
+
+			array('allow', 
+				'actions'=>array(
+					'class',
+					// 'saveclass',
+					'viewclass',
+					'savestudentsclass',
+					'uploadlectureclass',
+                ),
+				'roles'=>array('Instructor'),
+			),
+
+			array('allow', 
+				'actions'=>array(
+					'class',
+					// 'saveclass',
+					'viewclass',
+					// 'savestudentsclass',
+					// 'uploadlectureclass',
+                ),
+				'roles'=>array('Student'),
+			),
 			
 			array('deny',  // deny all other users
 				'users'=>array('*'),
