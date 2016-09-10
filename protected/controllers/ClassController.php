@@ -83,6 +83,10 @@ class ClassController extends Controller
 							$retMessage = "Please Select Day Of Schedule";
 						}
 					}
+					else
+					{
+						$retMessage = "Error Saving Class";
+					}
 				}
 				else
 				{

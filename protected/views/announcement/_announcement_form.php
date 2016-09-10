@@ -10,7 +10,7 @@
 
 <?php echo $form->textFieldGroup($vm->announcement, 'title') ?>
 
-<?php $data = CHtml::listData( Classes::model()->findAll(), 'class_id', 'subject'); ?>
+<?php $data = CHtml::listData( Classes::model()->findAll(), 'class_id', 'title'); ?>
 <?php echo $form->select2Group(
 	$vm->announcement,
 	'defined_class',

@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'classes':
  * @property integer $class_id
+ * @property integer $title
  * @property integer $subject
  * @property integer $room
  * @property integer $sy
@@ -46,9 +47,10 @@ class Classes extends CActiveRecord
 		return array(
 			array('subject, room, sy, instructor, time_start, time_end', 'required'),
 			array('subject, room, sy, semester, instructor, created_by', 'numerical', 'integerOnly'=>true),
+			array('title', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('class_id, subject, room, sy, semester, instructor, time_start, time_end, date_created, date_ended, created_by', 'safe', 'on'=>'search'),
+			array('class_id, title, subject, room, sy, semester, instructor, time_start, time_end, date_created, date_ended, created_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +75,7 @@ class Classes extends CActiveRecord
 	{
 		return array(
 			'class_id' => 'Class',
+			'title' => 'Title',
 			'subject' => 'Subject',
 			'room' => 'Room',
 			'sy' => 'Sy',
@@ -115,9 +118,14 @@ class Classes extends CActiveRecord
 	}
 
 	public function beforeSave() {
+
+		$subject = Subject::model()->findByPk($this->subject);
+		$room = Room::model()->findByPk($this->room);
+
         if(parent::beforeSave()) {
             if(($this->isNewRecord)) {
             	$this->created_by = Yii::app()->user->id;
+            	$this->title = $subject->description . " - " . $room->description . " ( " . date("h:i A", strtotime($this->time_start)) . " - " . date("h:i A", strtotime($this->time_end)) . " )";
                 $this->date_created = date('Y-m-d H:i:s');
             }
             return true;

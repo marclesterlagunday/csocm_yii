@@ -47,6 +47,7 @@ class Announcement extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'User'=>array(self::HAS_ONE, 'User', array( 'id' => 'posted_by' )),
+			'Classes'=>array(self::HAS_ONE, 'Classes', array( 'class_id' => 'defined_class' )),
 		);
 	}
 
