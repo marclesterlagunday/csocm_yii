@@ -31,6 +31,10 @@ class ClassController extends Controller
 					'viewclass',
 					'savestudentsclass',
 					'uploadlectureclass',
+					'removestudenttoclass',
+					'saveattendance',
+					'viewattendance',
+					'togglestudentattendance',
                 ),
 				'roles'=>array('Instructor'),
 			),
@@ -135,6 +139,7 @@ class ClassController extends Controller
 		$vm->user = new User('search');
 		$vm->class_lecture = new ClassLecture('search');
 		$vm->lecture = new Lecture('search');
+		$vm->attendance = new Attendance('search');
 
 		if(trim($id) != '')
 		{
@@ -145,6 +150,7 @@ class ClassController extends Controller
 				$vm->class = $findClass;
 				$vm->class_student->class = $findClass->class_id;
 				$vm->class_lecture->class = $findClass->class_id;
+				$vm->attendance->class = $findClass->class_id;
 
 				$findClassDays = ClassDay::model()->findAll(array("condition"=>"class = {$findClass->class_id}"));
 
@@ -267,6 +273,166 @@ class ClassController extends Controller
             'retVal' => $retVal,
             'retMessage' => $retMessage,
         ));
+	}
+
+	public function actionRemoveStudentToClass()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		if(isset($_POST['student']))
+		{
+			$class_student = $_POST['student'];
+			$findStudentInClass = ClassStudent::model()->findByPk($class_student);
+
+			if(isset($findStudentInClass))
+			{
+				$findUser = User::model()->findByPk($findStudentInClass->student);
+
+				if(isset($findUser))
+				{
+					if($findStudentInClass->delete())
+					{
+						$retVal = 'success';
+						$retMessage = $findUser->firstname . ' Removed In Class';
+					}
+					else
+					{
+						$retMessage = 'Unable to Remove ' . $findUser->firstname;
+					}
+				}
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
+	}
+
+	public function actionSaveAttendance()
+	{
+		$retVal = 'error';
+		$retMessage = 'Error';
+
+		$vm = (object) array();
+		$vm->attendance = new Attendance('search');
+
+		if(isset($_POST['Attendance']))
+		{
+			$vm->attendance->attributes = $_POST['Attendance'];
+
+			if(trim($vm->attendance->date) != '')
+			{
+				$vm->attendance->date = date("Y-m-d", strtotime($vm->attendance->date));
+
+				$findAttendance = Attendance::model()->findByAttributes(array('date'=>$vm->attendance->date, 'class'=>$vm->attendance->class));
+
+				if(!isset($findAttendance))
+				{
+					$findAllClassStudents = ClassStudent::model()->findAllByAttributes(array('class' => $vm->attendance->class));
+
+					if(count($findAllClassStudents) > 0)
+					{
+						if($vm->attendance->save())
+						{
+							foreach($findAllClassStudents as $students)
+							{
+								$newAttendanceStudent = new AttendanceStudent();
+								$newAttendanceStudent->student = $students->student;
+								$newAttendanceStudent->attendance = $vm->attendance->attendance_id;
+
+								if($newAttendanceStudent->save())
+								{
+									$retVal = 'success';
+									$retMessage = $vm->attendance->attendance_id;
+								}
+							}
+						}
+					}
+					else
+					{
+						$retMessage = 'Class must have a student to create attendance';
+					}
+				}
+				else
+				{
+					$retMessage = 'Attendance on ' . $vm->attendance->date . ' already exist.';
+				}
+			}
+			else
+			{
+				$retMessage = 'Please select date.';
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', array(
+			'retVal' => $retVal,
+			'retMessage' => $retMessage,
+		));
+	}
+
+	public function actionViewAttendance($id)
+	{
+		$vm = (object) array();
+		$vm->attendance = new Attendance('search');
+		$vm->attendance_student = new AttendanceStudent('search');
+
+		if($id != '')
+		{
+			$findAttendance = Attendance::model()->findByPk($id);
+
+			if(isset($findAttendance))
+			{
+				$vm->attendance = $findAttendance;
+			}
+		}
+
+		$this->render('view_attendance', array(
+			'vm' => $vm,
+		));
+	}
+
+	public function actionToggleStudentAttendance()
+	{
+		$retVal = 'error';
+		$retMessage = 'Error';
+
+		if(isset($_POST['id']))
+		{
+			$id = $_POST['id'];
+
+			$findAttendanceStudent = AttendanceStudent::model()->findByPk($id);
+
+			if(isset($findAttendanceStudent))
+			{
+				if($findAttendanceStudent->present == 0)
+				{
+					$findAttendanceStudent->present = 1;
+				}
+				else
+				{
+					$findAttendanceStudent->present = 0;
+				}
+
+				if($findAttendanceStudent->save())
+				{
+					$retVal = 'success';
+					$retMessage = 'Success';
+				}
+				else
+				{
+					$retMessage = 'Unable Saved';
+				}
+			}
+		}
+
+		$this->renderPartial('/json/json_ret',
+		array(
+			'retVal' => $retVal,
+			'retMessage' => $retMessage,
+		));
 	}
 
 }

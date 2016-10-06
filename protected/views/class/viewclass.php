@@ -80,6 +80,42 @@
     		</div>
     	</div>
     </div>
+    <div class="row">
+        <div class="col-sm-8">
+            
+        </div>
+        <div class="col-sm-4">
+            <h2>Class Attendance</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            
+        </div>
+        <div class="col-sm-4">
+            <div class="well">
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Create Attendance',
+                        'context' => 'primary',
+                        'icon' => 'fa fa-plus',
+                        'htmlOptions' => array(
+                            'data-toggle' => 'modal',
+                            'data-target' => '#classAttendanceModal',
+                        ),
+                    )
+                ); ?>
+                <br/>
+                <?php
+                    $this->renderPartial('_classattendance', array(
+                        'vm' => $vm,
+                    ));
+                ?>
+            </div>
+            
+        </div>
+    </div>
 </div>
 
 <?php $this->beginWidget(
@@ -151,9 +187,86 @@
 </div>
 <?php $this->endWidget(); ?>
 
+<?php $this->beginWidget(
+    'booster.widgets.TbModal',
+    array('id' => 'classAttendanceModal')
+); ?>
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Attendance List</h4>
+</div>
+
+<div class="modal-body">
+    <?php
+        $this->renderPartial('_attendance_form', array(
+            'vm' => $vm,
+        ));
+    ?>
+</div>
+
+<div class="modal-footer">
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'context' => 'primary',
+            'label' => 'Create',
+            'url' => '#',
+            'htmlOptions' => array('id' => 'save_attendance_btn'),
+        )
+    ); ?>
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'label' => 'Cancel',
+            'url' => '#',
+            'htmlOptions' => array('data-dismiss' => 'modal', 'class' => 'close_btn'),
+        )
+    ); ?>
+</div>
+<?php $this->endWidget(); ?>
+
+<?php $this->beginWidget(
+    'booster.widgets.TbModal',
+    array('id' => 'classAttendanceStudentModal')
+); ?>
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Attendance Student</h4>
+</div>
+
+<div class="modal-body">
+    Loading . . .
+</div>
+
+<div class="modal-footer">
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'context' => 'primary',
+            'label' => 'Create',
+            'url' => '#',
+            'htmlOptions' => array('id' => 'save_attendance_student_btn'),
+        )
+    ); ?>
+    <?php $this->widget(
+        'booster.widgets.TbButton',
+        array(
+            'label' => 'Cancel',
+            'url' => '#',
+            'htmlOptions' => array('data-dismiss' => 'modal', 'class' => 'close_btn'),
+        )
+    ); ?>
+</div>
+<?php $this->endWidget(); ?>
+
 <?php
     $savestudentsclass  = Yii::app()->createUrl( "class/savestudentsclass" );
     $uploadlectureclass = Yii::app()->createUrl( "class/uploadlectureclass" );
+    $removestudenttoclass = Yii::app()->createUrl( "class/removestudenttoclass" );
+    $saveattendance = Yii::app()->createUrl( "class/saveattendance" );
+    $viewattendance = Yii::app()->createUrl( "class/viewattendance" );
     $success = 'success';
     $error = 'error';
     $id = $_GET["id"];
@@ -219,6 +332,59 @@
                     }
                 }
             });
+        });
+
+        $(document).on('click', '.remove_student_btn', function(){
+            var student = $(this).attr('ref');
+
+            $.ajax({
+                type: 'POST',
+                url: '{$removestudenttoclass}',
+                data: {'student':student},
+                dataType:'json',
+                success: function(data){
+                    var json = data;
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#class_student_list').yiiGridView('update', {
+                            data: $(this).serialize()
+                        });
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $('#class_student_list').yiiGridView('update', {
+                            data: $(this).serialize()
+                        });
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            });
+
+        });
+
+        $(document).on('click', '#save_attendance_btn', function(){
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$saveattendance}',
+                data        : $('#class_attendance_form').serialize(),
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#classAttendanceModal').modal('hide');
+                        window.location =  '{$viewattendance}&id=' + json.retMessage;
+
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
         });
 
     ", CClientScript::POS_HEAD);

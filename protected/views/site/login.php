@@ -27,7 +27,7 @@
 						<div class="panel-body">
 							<div class="input-group">
 								<span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-								<?php echo $form->textField($model,'username', array('tabindex'=>'1', 'class'=>'form-control', 'placeholder'=>'Username', 'value'=>'')); ?>
+								<?php echo $form->textField($model,'username', array('tabindex'=>'1', 'class'=>'form-control', 'placeholder'=>'Username', 'value'=>'', 'autocomplete'=>'off')); ?>
 								<?php //echo $form->error($model,'username'); ?>
 							</div>
 						<br>

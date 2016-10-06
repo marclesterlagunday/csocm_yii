@@ -3,9 +3,9 @@
 $this->widget(
     'booster.widgets.TbExtendedGridView',
     array(
-        'id' => 'class_student_list',
+        'id' => 'class_student_attendance_list',
         'type' => 'striped bordered condensed',
-        'dataProvider' => $vm->class_student->search(),
+        'dataProvider' => $vm->attendance_student->search(),
         // 'template' => "{items}",
         'columns' => array(
             array(
@@ -30,18 +30,19 @@ $this->widget(
             array(
                 'name' => 'Action',
                 'header' => 'Action',
-                'htmlOptions'=>array('style'=>'width: 40px'),
+                'htmlOptions'=>array('style'=>'width: 100px'),
                 // 'type' => 'raw',
                 'value' =>  function($data){
                                 $this->widget(
                                     'booster.widgets.TbButton',
                                     array(
-                                        'label' => '',
+                                        'label' => ($data->present == 1) ? 'PRESENT' : 'ABSENT',
+                                        'context' => ($data->present == 1) ? 'success' : 'danger',
                                         'size' => 'small',
-                                        'icon' => 'fa fa-times',
+                                        'icon' => 'fa fa-circle-o',
                                         'htmlOptions' => array(
-                                            'class'=>'remove_student_btn',
-                                            'ref'=>$data->class_student_id,
+                                            'class'=>'status_student_btn',
+                                            'ref'=>$data->attendance_student_id,
                                         ),
                                     )
                                 );
