@@ -12,7 +12,7 @@ $this->widget(
                 'name' => '#',
                 'header' => '#',
                 'value' => '$row + 1',
-                'htmlOptions'=>array('style'=>'width: 60px'),
+                'htmlOptions'=>array('style'=>'width: 30px'),
             ),
             array(
                 'name' => 'Lecture', 

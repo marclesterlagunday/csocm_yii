@@ -12,7 +12,7 @@ $this->widget(
                 'name' => '#',
                 'header' => '#',
                 'value' => '$row + 1',
-                'htmlOptions'=>array('style'=>'width: 60px'),
+                'htmlOptions'=>array('style'=>'width: 30px'),
             ),
             array(
               'class'=>'bootstrap.widgets.TbImageColumn',
@@ -30,9 +30,24 @@ $this->widget(
             array(
                 'name' => 'Action',
                 'header' => 'Action',
-                'htmlOptions'=>array('style'=>'width: 40px'),
+                'htmlOptions'=>array('style'=>'width: 115px'),
                 // 'type' => 'raw',
                 'value' =>  function($data){
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => 'View',
+                                        'size' => 'small',
+                                        'context' => 'info',
+                                        'icon' => 'fa fa-eye',
+                                        'buttonType' =>'link',
+                                        'url'=>array('class/viewstudent', 'id'=>$data->class_student_id,),
+                                        'htmlOptions' => array(
+                                            'class'=>'view_student_btn',
+                                            'ref'=>$data->class_student_id,
+                                        ),
+                                    )
+                                );echo ' ';
                                 $this->widget(
                                     'booster.widgets.TbButton',
                                     array(

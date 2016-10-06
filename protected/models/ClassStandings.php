@@ -1,19 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "class_student".
+ * This is the model class for table "class_standings".
  *
- * The followings are the available columns in table 'class_student':
- * @property integer $class_student_id
+ * The followings are the available columns in table 'class_standings':
+ * @property integer $id
  * @property integer $class
  * @property integer $student
+ * @property integer $type
+ * @property integer $Grade
  */
-class ClassStudent extends CActiveRecord
+class ClassStandings extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return ClassStudent the static model class
+	 * @return ClassStandings the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -25,7 +27,7 @@ class ClassStudent extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'class_student';
+		return 'class_standings';
 	}
 
 	/**
@@ -36,11 +38,11 @@ class ClassStudent extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('class, student', 'required'),
-			array('class, student', 'numerical', 'integerOnly'=>true),
+			array('class, student, type, Grade', 'required'),
+			array('class, student, type, Grade', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('class_student_id, class, student', 'safe', 'on'=>'search'),
+			array('id, class, student, type, Grade', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,8 +54,7 @@ class ClassStudent extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Student'=>array(self::HAS_ONE, 'User', array( 'id' => 'student' )),
-			'Classes'=>array(self::HAS_ONE, 'Classes', array( 'class_id' => 'class' )),
+			'ClassStandingType'=>array(self::HAS_ONE, 'ClassStandingType', array( 'id' => 'type' )),
 		);
 	}
 
@@ -63,9 +64,11 @@ class ClassStudent extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'class_student_id' => 'Class Student',
+			'id' => 'ID',
 			'class' => 'Class',
 			'student' => 'Student',
+			'type' => 'Type',
+			'Grade' => 'Grade',
 		);
 	}
 
@@ -80,9 +83,11 @@ class ClassStudent extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('class_student_id',$this->class_student_id);
+		// $criteria->compare('id',$this->id);
 		$criteria->compare('class',$this->class);
 		$criteria->compare('student',$this->student);
+		// $criteria->compare('type',$this->type);
+		// $criteria->compare('Grade',$this->Grade);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

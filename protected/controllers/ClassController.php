@@ -20,6 +20,7 @@ class ClassController extends Controller
 					'viewclass',
 					'savestudentsclass',
 					'uploadlectureclass',
+					'viewstudent',
                 ),
 				'roles'=>array('Admin'),
 			),
@@ -35,6 +36,9 @@ class ClassController extends Controller
 					'saveattendance',
 					'viewattendance',
 					'togglestudentattendance',
+					'viewstudent',
+					'saveeditgrades',
+					'saveclassstanding',
                 ),
 				'roles'=>array('Instructor'),
 			),
@@ -46,6 +50,7 @@ class ClassController extends Controller
 					'viewclass',
 					// 'savestudentsclass',
 					// 'uploadlectureclass',
+					'viewstudent',
                 ),
 				'roles'=>array('Student'),
 			),
@@ -430,6 +435,84 @@ class ClassController extends Controller
 
 		$this->renderPartial('/json/json_ret',
 		array(
+			'retVal' => $retVal,
+			'retMessage' => $retMessage,
+		));
+	}
+
+	public function actionViewStudent($id)
+	{
+		$vm = (object) array();
+		$vm->class_student = new ClassStudent('search');
+		$vm->class_standings = new ClassStandings('search');
+
+		$findClassStudent = ClassStudent::model()->findByPk($id);
+
+		if(isset($findClassStudent))
+		{
+			$vm->class_student = $findClassStudent;
+			$vm->class_standings->class = $findClassStudent->class;
+			$vm->class_standings->student = $findClassStudent->student;
+		}
+
+		$this->render('view_student',array(
+			'vm' => $vm,
+		));
+	}
+
+	public function actionSaveEditGrades()
+	{
+		if(isset($_POST['value']) && isset($_POST['pk']))
+		{
+			$ClassStandings = ClassStandings::model()->findByPk($_POST['pk']);
+
+			if(isset($ClassStandings))
+			{
+				$ClassStandings->Grade = $_POST['value'];
+				$ClassStandings->save();
+			}
+		}
+	}
+
+	public function actionSaveClassStanding()
+	{
+		$retVal = 'error';
+		$retMessage = 'Error';
+
+		$class_standings = new ClassStandings();
+
+		if(isset($_POST['ClassStandings']))
+		{
+			$class_standings->attributes = $_POST['ClassStandings'];
+
+			if(trim($class_standings->Grade) != '' && $class_standings->type != '')
+			{
+				$findClassStanding = ClassStandings::model()->findByAttributes(array('class' => $class_standings->class, 'student' => $class_standings->student, 'type' => $class_standings->type));
+
+				if(!isset($findClassStanding))
+				{
+					if($class_standings->save())
+					{
+						$retVal = 'success';
+						$retMessage = 'Grade Added';
+					}
+					else
+					{
+						$retMessage = 'Unable to save.';
+					}
+				}
+				else
+				{
+					$retMessage = $findClassStanding->ClassStandingType->description . ' has already grade.';
+				}
+			}
+			else
+			{
+				$retMessage = 'Please complete up the form.';
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', array(
 			'retVal' => $retVal,
 			'retMessage' => $retMessage,
 		));
