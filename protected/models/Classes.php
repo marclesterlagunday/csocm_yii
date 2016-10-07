@@ -65,6 +65,7 @@ class Classes extends CActiveRecord
 			'Subject'=>array(self::HAS_ONE, 'Subject', array( 'id' => 'subject' )),
 			'Room'=>array(self::HAS_ONE, 'Room', array( 'id' => 'room' )),
 			'Instructor'=>array(self::HAS_ONE, 'User', array( 'id' => 'instructor' )),
+			'ClassStudent'=>array(self::HAS_MANY, 'ClassStudent', array( 'class' =>'class_id' )),
 		);
 	}
 
@@ -112,6 +113,20 @@ class Classes extends CActiveRecord
 		$criteria->compare('date_ended',$this->date_ended,true);
 		$criteria->compare('created_by',$this->created_by);
 
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function myClass()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('instructor',$this->instructor);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -39,6 +39,7 @@ class ClassController extends Controller
 					'viewstudent',
 					'saveeditgrades',
 					'saveclassstanding',
+					'myclasses',
                 ),
 				'roles'=>array('Instructor'),
 			),
@@ -52,6 +53,7 @@ class ClassController extends Controller
 					// 'uploadlectureclass',
 					'viewstudent',
 					'viewattendance',
+					'myclasses',
                 ),
 				'roles'=>array('Student'),
 			),
@@ -557,6 +559,37 @@ class ClassController extends Controller
 			'retVal' => $retVal,
 			'retMessage' => $retMessage,
 		));
+	}
+
+	public function actionMyClasses()
+	{
+		$vm = (object) array();
+		$vm->class_student = new ClassStudent('search');
+		$vm->class = new Classes('search');
+
+		$user = Yii::app()->user->id;
+
+		$checkuser = AuthAssignment::model()->findByAttributes(array('userid'=>$user));
+
+		if(isset($checkuser))
+		{
+			if($checkuser->itemname == 'Student')
+			{
+				$vm->class_student->student = $user;
+
+				$this->render('myclasses', array(
+					'vm' => $vm,
+				));
+			}
+			elseif($checkuser->itemname == 'Instructor')
+			{
+				$vm->class->instructor = $user;
+
+				$this->render('instructorclasses', array(
+					'vm' => $vm,
+				));
+			}
+		}
 	}
 
 }

@@ -10,6 +10,8 @@
  */
 class ClassStudent extends CActiveRecord
 {
+	public $instructor;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -40,7 +42,7 @@ class ClassStudent extends CActiveRecord
 			array('class, student', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('class_student_id, class, student', 'safe', 'on'=>'search'),
+			array('class_student_id, class, student, instructor', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,6 +85,27 @@ class ClassStudent extends CActiveRecord
 		$criteria->compare('class_student_id',$this->class_student_id);
 		$criteria->compare('class',$this->class);
 		$criteria->compare('student',$this->student);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function myClass()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		$criteria->alias = 'ClassStudent';
+		$criteria->with[] = 'Classes';
+	        $criteria->together = true;
+
+		if($this->student != '')
+		{
+			$criteria->addCondition('ClassStudent.student = "' . $this->student . '"');
+		}
+		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
