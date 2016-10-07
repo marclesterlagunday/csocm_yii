@@ -22,8 +22,29 @@ class UserController extends Controller
 					'instructor',
 					'saveinstructor',
 					'viewinstructor',
+					'view',
+					'profile',
+					'EditStudent',
                 ),
 				'roles'=>array('Admin'),
+			),		
+			array('allow', 
+				'actions'=>array(
+
+					'view',
+					'profile',
+					'EditStudent',
+                ),
+				'roles'=>array('Student'),
+			),	
+			array('allow', 
+				'actions'=>array(
+
+					'view',
+					'profile',
+					'EditStudent',
+                ),
+				'roles'=>array('Instructor'),
 			),
 			
 			array('deny',  // deny all other users
@@ -51,7 +72,7 @@ class UserController extends Controller
 		$user = new User('search');
 		$user_course = new UserCourse('search');
 
-		if(isset($_POST['User']) && isset($_POST['UserCourse']))
+		if(isset($_POST['User']))
 		{
 			$user->attributes = $_POST['User'];
 			$user_course->attributes = $_POST['UserCourse'];
@@ -97,6 +118,51 @@ class UserController extends Controller
 				{
 					$retMessage = "Username Already Exist";
 				}
+			}
+			else
+			{
+				$retMessage = "Please Fill Up Required Fields";
+			}
+		}
+
+		$this->renderPartial('/json/json_ret', 
+        array(
+            'retVal' => $retVal,
+            'retMessage' => $retMessage,
+        ));
+	}
+	public function actionEditStudent()
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$user = new User('search');
+		$user_course = new UserCourse('search');
+
+		if(isset($_POST['User']))
+		{
+			$user->attributes = $_POST['User'];
+			// $user_course->attributes = $_POST['UserCourse'];
+
+			if(trim($user->username) != '' && trim($user->password) != '' && trim($user->firstname) != '' && trim($user->middlename) != '' && trim($user->surname) != '' && trim($user->age) >= 0 && trim($user->gender) != '' && trim($user->contact_no) != '' )
+			{
+				$findUser = User::model()->findByAttributes(array('username' => $user->username));
+				
+				$findUser->attributes =$user->attributes;
+
+					if($findUser->save())
+					{
+								$retVal = "success";
+								$retMessage = "User Saved";	
+							
+			
+
+					}
+					else
+					{
+						$retMessage = "Unable To Save User";
+					}
+
 			}
 			else
 			{
@@ -250,4 +316,50 @@ class UserController extends Controller
             'retMessage' => $retMessage,
         ));
 	}
+	
+	public function actionView($id)  //kevin edit
+	{
+		$retVal = "error";
+		$retMessage = "Error";
+
+		$vm = (object) array();
+		$vm->user = new User('search');
+		$vm->user_course = new UserCourse('search');
+
+		if(isset($id))
+		{
+
+			$findUser = User::model()->findByPk($id);
+
+			if(isset($findUser))
+			{
+				$vm->user = $findUser;
+
+				$findCourse = UserCourse::model()->findByAttributes(array('user'=>$vm->user->id));
+
+				if(isset($findCourse))
+				{
+					$vm->user_course = $findCourse;
+				}
+				$vm->user->password="";
+				$this->render('profile', array(
+							'vm'=>$vm,
+						));
+
+				// $retVal = "success";
+				// $retMessage = $view;
+			}
+		}
+
+		// $this->renderPartial('/json/json_ret', 
+        // array(
+            // 'retVal' => $retVal,
+            // 'retMessage' => $retMessage,
+        // ));
+	}
+	public function actionProfile(){          		//kevin edit
+        $this->actionView(Yii::app()->user->id);
+    }
+	
+	
 }

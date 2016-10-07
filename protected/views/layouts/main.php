@@ -20,7 +20,7 @@ $this->widget(
     'booster.widgets.TbNavbar',
     array(
         'type' => 'navbar', // null or 'inverse'
-        'brand' => 'Computer Studies',
+        'brand' => '<img src="./images/logo.png" alt="" height="50" width="50"style="margin-top: -14px;" class="img-circle"> Computer Studies',
         'brandUrl' => '#',
         'collapse' => true, // requires bootstrap-responsive.css
         'fixed' => false,
@@ -43,12 +43,7 @@ $this->widget(
                         'url' => array('/announcement/viewannouncement'),
                         'visible'=>Yii::app()->user->checkAccess('Student'),
                     ),
-                    array(
-                        'label' => '',
-                        'icon'=>'fa fa-book',
-                        'url' => array('/lecture/lecture'),
-                        'visible'=>Yii::app()->user->checkAccess('Instructor'),
-                    ),
+
                     array(
                         'label' => '',
                         'icon'=>'fa fa-building-o',
@@ -56,7 +51,7 @@ $this->widget(
                         'visible'=>!Yii::app()->user->isGuest,
                         'items' => array(
                             array('label' => "Todays Classes", 'url' => array('/class/class'), 'visible'=>!Yii::app()->user->isGuest),
-                            array('label' => 'Manage Class', 'url' => array('/class/manage'), 'visible'=>!Yii::app()->user->isGuest),
+                            //array('label' => 'Manage Class', 'url' => array('/class/manage'), 'visible'=>!Yii::app()->user->isGuest),
                         ),
                     ),
                     array(
@@ -85,7 +80,7 @@ $this->widget(
                         'label' => Yii::app()->user->name,  'visible'=>!Yii::app()->user->isGuest,
                         'url' => '#',
                         'items' => array(
-                            array('label' => 'Profile', 'url' => '#', 'visible'=>!Yii::app()->user->isGuest),
+                            array('label' => 'Profile', 'url'=>array('/user/profile'), 'visible'=>!Yii::app()->user->isGuest),
                             array('label'=>'Register', 'url'=>'', 'visible'=>Yii::app()->user->isGuest),
                             '---',
                             array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
