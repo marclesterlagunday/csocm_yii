@@ -32,6 +32,7 @@ $this->widget(
                 'header' => 'Action',
                 'htmlOptions'=>array('style'=>'width: 115px'),
                 // 'type' => 'raw',
+                'visible' => $vm->visible,
                 'value' =>  function($data){
                                 $this->widget(
                                     'booster.widgets.TbButton',
@@ -56,6 +57,30 @@ $this->widget(
                                         'icon' => 'fa fa-times',
                                         'htmlOptions' => array(
                                             'class'=>'remove_student_btn',
+                                            'ref'=>$data->class_student_id,
+                                        ),
+                                    )
+                                );
+                            },
+            ),
+            array(
+                'name' => 'Action',
+                'header' => 'Action',
+                'htmlOptions'=>array('style'=>'width: 80px'),
+                // 'type' => 'raw',
+                'visible' => ($vm->visible == false) ? true : false,
+                'value' =>  function($data){
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => 'View',
+                                        'size' => 'small',
+                                        'context' => 'info',
+                                        'icon' => 'fa fa-eye',
+                                        'buttonType' =>'link',
+                                        'url'=>array('class/viewstudent', 'id'=>$data->class_student_id,),
+                                        'htmlOptions' => array(
+                                            'class'=>'view_student_btn',
                                             'ref'=>$data->class_student_id,
                                         ),
                                     )

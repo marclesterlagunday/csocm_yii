@@ -19,6 +19,7 @@
                             'context' => 'primary',
                             'size' => 'normal',
                             'icon' => 'fa fa-plus',
+                            'visible' => $vm->visible,
                             'htmlOptions' => array(
                                 'class'=>'add_class_standings_btn',
                                 'data-toggle' => 'modal',

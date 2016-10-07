@@ -24,6 +24,7 @@ $this->widget(
             array(
                 'name' => 'Grade',
                 'header' => 'Grade',
+                'visible' => $vm->visible,
                 'value' => '($data->Grade != 0) ? $data->Grade : " " ',
                 'sortable'=> false,
                 'class' => 'booster.widgets.TbEditableColumn',
@@ -32,6 +33,13 @@ $this->widget(
                     'apply' => '($data->Grade == 0) ? false : true',
                     'url' => Yii::app()->createUrl( "class/SaveEditGrades" )
                 )
+            ),
+            array(
+                'name' => 'Grade', 
+                'header' => 'Grade',
+                'visible' => ($vm->visible == false) ? true : false,
+                'value' => '($data->Grade != 0) ? $data->Grade : " " ',
+                'sortable'=> false,
             ),
         )
     )

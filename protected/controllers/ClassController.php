@@ -51,6 +51,7 @@ class ClassController extends Controller
 					// 'savestudentsclass',
 					// 'uploadlectureclass',
 					'viewstudent',
+					'viewattendance',
                 ),
 				'roles'=>array('Student'),
 			),
@@ -68,6 +69,19 @@ class ClassController extends Controller
 		$vm->class_day = new ClassDay('search');
 		$vm->class = new Classes('search');
 		$vm->user = new User('search');
+		$vm->visible = true;
+
+		$user = Yii::app()->user->id;
+
+		$checkuser = AuthAssignment::model()->findByAttributes(array('userid'=>$user));
+
+		if(isset($checkuser))
+		{
+			if($checkuser->itemname == 'Student')
+			{
+				$vm->visible = false;
+			}
+		}
 		
 		$this->render('class',array(
 			'vm'=>$vm,
@@ -145,6 +159,19 @@ class ClassController extends Controller
 		$vm->class_lecture = new ClassLecture('search');
 		$vm->lecture = new Lecture('search');
 		$vm->attendance = new Attendance('search');
+		$vm->visible = true;
+
+		$user = Yii::app()->user->id;
+
+		$checkuser = AuthAssignment::model()->findByAttributes(array('userid'=>$user));
+
+		if(isset($checkuser))
+		{
+			if($checkuser->itemname == 'Student')
+			{
+				$vm->visible = false;
+			}
+		}
 
 		if(trim($id) != '')
 		{
@@ -445,6 +472,19 @@ class ClassController extends Controller
 		$vm = (object) array();
 		$vm->class_student = new ClassStudent('search');
 		$vm->class_standings = new ClassStandings('search');
+		$vm->visible = true;
+
+		$user = Yii::app()->user->id;
+
+		$checkuser = AuthAssignment::model()->findByAttributes(array('userid'=>$user));
+
+		if(isset($checkuser))
+		{
+			if($checkuser->itemname == 'Student')
+			{
+				$vm->visible = false;
+			}
+		}
 
 		$findClassStudent = ClassStudent::model()->findByPk($id);
 

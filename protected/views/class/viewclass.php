@@ -43,6 +43,7 @@
                         'label' => 'Add Student',
                         'context' => 'primary',
                         'icon' => 'fa fa-plus',
+                        'visible' => $vm->visible,
                         'htmlOptions' => array(
                             'data-toggle' => 'modal',
                             'data-target' => '#classStudentModal',
@@ -65,6 +66,7 @@
                         'label' => 'Add Lecture',
                         'context' => 'primary',
                         'icon' => 'fa fa-plus',
+                        'visible' => $vm->visible,
                         'htmlOptions' => array(
                             'data-toggle' => 'modal',
                             'data-target' => '#classLectureModal',
@@ -100,6 +102,7 @@
                         'label' => 'Create Attendance',
                         'context' => 'primary',
                         'icon' => 'fa fa-plus',
+                        'visible' => $vm->visible,
                         'htmlOptions' => array(
                             'data-toggle' => 'modal',
                             'data-target' => '#classAttendanceModal',

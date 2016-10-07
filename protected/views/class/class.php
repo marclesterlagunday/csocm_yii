@@ -16,6 +16,7 @@
                         'label' => 'Add New',
                         'context' => 'primary',
                         'icon' => 'fa fa-plus',
+                        'visible' => $vm->visible,
                         'htmlOptions' => array(
                             'data-toggle' => 'modal',
                             'data-target' => '#classModal',

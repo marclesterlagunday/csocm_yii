@@ -25,6 +25,7 @@ $this->widget(
                 'header' => 'Action',
                 'htmlOptions'=>array('style'=>'width: 85px'),
                 // 'type' => 'raw',
+                'visible' => $vm->visible,
                 'value' =>  function($data){
                                 $this->widget(
                                     'booster.widgets.TbButton',
@@ -50,6 +51,30 @@ $this->widget(
                                         'htmlOptions' => array(
                                             'class'=>'delete_btn',
                                             'ref'=>$data->class_lecture_id,
+                                        ),
+                                    )
+                                );
+                            },
+            ),
+            array(
+                'name' => 'Action',
+                'header' => 'Action',
+                'htmlOptions'=>array('style'=>'width: 45px'),
+                // 'type' => 'raw',
+                'visible' => ($vm->visible == false) ? true : false, 
+                'value' =>  function($data){
+                                $this->widget(
+                                    'booster.widgets.TbButton',
+                                    array(
+                                        'label' => '',
+                                        'size' => 'small',
+                                        'icon' => 'fa fa-download',
+                                        'buttonType' =>'link',
+                                        'url'=>'lectures/' . $data->Lecture->filename,
+                                        'htmlOptions' => array(
+                                            'class'=>'view_btn',
+                                            'ref'=>$data->class_lecture_id,
+                                            'target'=>'_blank',
                                         ),
                                     )
                                 );
