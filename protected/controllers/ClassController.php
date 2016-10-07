@@ -170,6 +170,7 @@ class ClassController extends Controller
 			if($checkuser->itemname == 'Student')
 			{
 				$vm->visible = false;
+				$vm->class_student->student = $user;
 			}
 		}
 
