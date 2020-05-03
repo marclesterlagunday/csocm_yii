@@ -6,19 +6,11 @@
  * The followings are the available columns in table 'subject':
  * @property integer $id
  * @property string $description
+ * @property string $subjec_code
+ * @property string $subject_dec
  */
 class Subject extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Subject the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
-
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,11 +27,13 @@ class Subject extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('description', 'required'),
+			array('description, subjec_code, subject_dec', 'required'),
 			array('description', 'length', 'max'=>128),
+			array('subjec_code', 'length', 'max'=>64),
+			array('subject_dec', 'length', 'max'=>256),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, description', 'safe', 'on'=>'search'),
+			// @todo Please remove those attributes that should not be searched.
+			array('id, description, subjec_code, subject_dec', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,26 +55,48 @@ class Subject extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'description' => 'Description',
+			'description' => 'Subject',
+			'subjec_code' => 'Subject Code',
+			'subject_dec' => 'Subject Description',
 		);
 	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('description',$this->description,true);
+		$criteria->compare('subjec_code',$this->subjec_code,true);
+		$criteria->compare('subject_dec',$this->subject_dec,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Subject the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
 	}
 }

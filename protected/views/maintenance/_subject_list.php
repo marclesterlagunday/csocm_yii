@@ -16,8 +16,20 @@ $this->widget(
             ),
             array(
                 'name' => 'description', 
-                'header' => 'description',
+                'header' => 'Subject',
                 'value' => '$data->description',
+                'sortable'=> false,
+            ),
+            array(
+                'name' => 'description', 
+                'header' => 'Code',
+                'value' => '$data->subjec_code',
+                'sortable'=> false,
+            ),   
+			array(
+                'name' => 'description', 
+                'header' => 'Description',
+                'value' => '$data->subject_dec',
                 'sortable'=> false,
             ),
             array(

@@ -29,41 +29,32 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
-<?php echo $form->passwordFieldGroup($vm->user, 'checkpassword', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
 <hr/>
-<?php $data = CHtml::listData( Course::model()->findAll(), 'course_id', 'description'); ?>
-<?php echo $form->select2Group(
-	$vm->user_course,
-	'course',
-	array(
-		'wrapperHtmlOptions' => array(
-			'class' => 'col-sm-5',
-		),
-		'widgetOptions' => array(
-			'asDropDownList' => true,
-			'data' => $data,
-			'options' => array(
-				// 'tags' => $data,
-				'placeholder' => 'Course',
-				 // 'width' => '40%', 
-				'tokenSeparators' => array(',', ' ')
+
+
+	<?php   echo $form->dropDownListGroup(
+		$vm->user_course,
+			'course',
+			array(
+			'widgetOptions' => array(
+				 'data' => CHtml::listData( Course::model()->findAll(), 'course_id', 'description'),
+				 'htmlOptions' => array('prompt' => '-','id'=>'description'),
 			)
 		)
-	)
-);?>
+	); ?>
 
-<?php echo $form->datePickerGroup(
-    $vm->user,
-    'birthday',
-    array(
-        'prepend' => '<i class="glyphicon glyphicon-calendar"></i>'
-    )
-); ?>
-<hr/>
+	<?php   echo $form->dropDownListGroup(
+		$vm->user_course,
+			'sy',
+			array(
+			'widgetOptions' => array(
+				 'data' => CHtml::listData( SchoolYear::model()->findAll(), 'sy_id', 'description'),
+				 'htmlOptions' => array('prompt' => '-','id'=>'description'),
+			)
+		)
+	); ?>
+
+
 <?php echo $form->textFieldGroup($vm->user, 'firstname', array(
 	'widgetOptions' => array(
 		'htmlOptions' => array('autocomplete'=>"off")
@@ -79,7 +70,14 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
-
+<?php echo $form->numberFieldGroup($vm->user, 'age', array(
+	'widgetOptions' => array(
+		'htmlOptions' => array('autocomplete'=>"off")
+	),
+	'wrapperHtmlOptions' => array(
+		'class' => 'col-sm-3'
+	),
+)); ?>
 <?php echo $form->dropDownListGroup(
 	$vm->user,
 	'gender',

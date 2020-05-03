@@ -7,101 +7,162 @@
 		)
 	);
 ?>
+<?php $this->beginWidget(
+                'booster.widgets.TbModal',
+                array('id' => 'changepass')
+            ); ?>
+			
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>Change Password</h4>
+            </div>
 
-<div class="row">
+            <div class="modal-body">
+                <?php
+                	$this->renderPartial('_change_pass', array(
+                		'vm'=>$vm,
+                	));
+                ?>
+            </div>
 
-	<div class="col-sm-offset-4">
-	
+            <div class="modal-footer">
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'context' => 'primary',
+                        'label' => 'Save',
+                        'url' => '#',
+                        'htmlOptions' => array('id' => 'changepassword'),
+                    )
+                ); ?>
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Close',
+                        'url' => '#',
+                        'htmlOptions' => array('data-dismiss' => 'modal'),
+                    )
+                ); ?>
+            </div>
+        </div>
+<?php $this->endWidget(); ?>
+<div class="row col-md-offset-5">
+
+	<div class="well col-md-2">
+		<center>
+		<b>User Profile</b>
+		</center>
+		<hr>
 		<div class="img-container">
 		    <img src=<?php echo ($vm->user->profile_pic != '') ? $vm->user->profile_pic : "./images/user.png" ?> alt="" height="90" width="90" class="" id="profile_pic">
 		    <?php echo $form->hiddenField($vm->user,'profile_pic',array('class'=>'input-style', 'id'=>'img_uri')); ?>
-		    <label class="btn btn-primary">
+		    <label class="btn btn-primary btn-lg btn-block">
 	            Browse&hellip; <input type="file" id="file" style="display: none;">
 	        </label>
 		</div>
 	</div>
 </div>
 <br />
- <?php echo $form->hiddenField($vm->user,'id'); // hidden target?>
-<?php echo $form->textFieldGroup($vm->user, 'username', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
-<?php echo $form->passwordFieldGroup($vm->user, 'password', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
-<hr/>
-<?php echo $form->textFieldGroup($vm->user, 'firstname', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
-<?php echo $form->textFieldGroup($vm->user, 'middlename', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
-<?php echo $form->textFieldGroup($vm->user, 'surname', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	)
-)); ?>
-<?php echo $form->numberFieldGroup($vm->user, 'age', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	),
-	'wrapperHtmlOptions' => array(
-		'class' => 'col-sm-3'
-	),
-)); ?>
-<?php echo $form->dropDownListGroup(
-	$vm->user,
-	'gender',
-	array(
-		'wrapperHtmlOptions' => array(
-			'class' => 'col-sm-5',
-		),
-		'widgetOptions' => array(
-			'data' => array('1'=>'Male', '2'=>'Female'),
-			'htmlOptions' => array('prompt'=>'Gender'),
-		)
-	)
-); ?>
-<hr/>
-<?php echo $form->textFieldGroup($vm->user, 'email', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	),
-)); ?>
-<?php echo $form->textFieldGroup($vm->user, 'contact_no', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	),
-	'wrapperHtmlOptions' => array(
-		'class' => 'col-sm-7'
-	),
-)); ?>            	
-<div class="row">
-<div class="col-sm-12">
+<div class="row col-sm-offset-2 well col-sm-8">>
 
-                <?php $this->widget(
-                    'booster.widgets.TbButton',
-                    array(
-                        'context' => 'primary',
-                        'label' => 'Save Details',
-                        'url' => '#',
-                        'htmlOptions' => array('id' => 'save_btn'),
-                    )
-                ); ?>
-				</div>
-				</div>
+	<div class="col-sm-offset-2 col-sm-3">
+			<?php
+			Echo 'UserName:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'username', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);
+			echo '</br>';
+			Echo 'Email:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'email', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);	
+			echo '</br>';
+			Echo 'Contact No:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'contact_no', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);
+			?>
+	</div>
+		<div class="col-sm-offset-1 col-sm-3">
+			<?php
+			Echo 'First Name:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'firstname', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);
+			Echo '</br>';
+			Echo 'Middle Name:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'middlename', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);
+			Echo '</br>';
+			Echo 'Last Name:     ';	
+			$this->widget(
+				'booster.widgets.TbEditableField',
+				array(
+					'type' => 'text',
+					'model' => $vm->user,
+					'attribute' => 'surname', // $model->name will be editable
+					'url' => Yii::app()->createUrl( "maintenance/saveusername" ),
+				)
+			);
+			?>
+	</div>
+	
+	<div class="col-sm-offset-2 col-sm-6">
+	</br>
+
+	<div class="col-sm-12">
+            		<?php $this->widget(
+            		    'booster.widgets.TbButton',
+            		    array(
+            		        'label' => 'Change Password',
+            		        'context' => 'primary',
+            		        'icon' => 'fa fa-lock',
+							
+            		        'htmlOptions' => array(
+            		            'class'=> 'btn btn-primary btn-lg btn-block',
+								'data-toggle' => 'modal',
+            		            'data-target' => '#changepass',
+            		        ),
+            		    )
+            		); ?>
+            	</div>
+	</div>
+</div>
 <?php $this->endWidget(); ?>
-<?php
+ <?php
 	$save_student = Yii::app()->createUrl( "user/savestudent" );
-	$edit_student = Yii::app()->createUrl( "user/EditStudent" );
+	$edit_student = Yii::app()->createUrl( "maintenance/ChangePassword" );
     $view_student = Yii::app()->createUrl( "user/viewstudent" );
 	$success = 'success';
 	$error = 'error';
@@ -133,7 +194,7 @@
 	    	$('#User_username').focus();
 	    });
 
-		$(document).on('click', '#save_btn', function(){
+		$(document).on('click', '#changepassword', function(){
             $.ajax({
                 type        : 'POST', 
                 url         : '{$edit_student}',
@@ -145,13 +206,7 @@
                     if(json.retVal == '{$success}')
                     {
                         $.notify(json.retMessage, json.retVal);
-                        $('#student_list').yiiGridView('update', {
-				        	data: $(this).serialize()
-				        });
-				        $( '#student_form' ).each(function(){
-						    this.reset();
-						});
-				        $('#studentModal').modal('hide');
+				        $('#changepass').modal('hide');
                     }
                     else if(json.retVal == '{$error}')
                     {

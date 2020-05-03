@@ -74,7 +74,7 @@ class ClassController extends Controller
 		$vm->visible = true;
 
 		$user = Yii::app()->user->id;
-
+		$vm->class->instructor= $user;
 		$checkuser = AuthAssignment::model()->findByAttributes(array('userid'=>$user));
 
 		if(isset($checkuser))

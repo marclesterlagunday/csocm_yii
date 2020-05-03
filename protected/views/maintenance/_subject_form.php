@@ -13,4 +13,14 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
+<?php echo $form->textFieldGroup($vm->subject, 'subjec_code', array(
+	'widgetOptions' => array(
+		'htmlOptions' => array('autocomplete'=>"off")
+	)
+)); ?>
+<?php echo $form->textAreaGroup($vm->subject, 'subject_dec', array(
+	'widgetOptions' => array(
+		'htmlOptions' => array('autocomplete'=>"off")
+	)
+)); ?>
 <?php $this->endWidget(); ?>

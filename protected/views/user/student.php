@@ -91,6 +91,32 @@
                     )
                 ); ?>
             </div>
+            <?php $this->endWidget(); ?>  
+
+			<?php $this->beginWidget(
+                'booster.widgets.TbModal',
+                array('id' => 'ViewEditStudentModal')
+            ); ?>
+
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>View Student</h4>
+            </div>
+
+            <div class="modal-body">
+                Loading . . . .
+            </div>
+
+            <div class="modal-footer">
+                <?php $this->widget(
+                    'booster.widgets.TbButton',
+                    array(
+                        'label' => 'Close',
+                        'url' => '#',
+                        'htmlOptions' => array('data-dismiss' => 'modal'),
+                    )
+                ); ?>
+            </div>
             <?php $this->endWidget(); ?>
         </div>
     </div>
@@ -99,6 +125,7 @@
 <?php
 	$save_student = Yii::app()->createUrl( "user/savestudent" );
     $view_student = Yii::app()->createUrl( "user/viewstudent" );
+    $view_edit = Yii::app()->createUrl( "user/ViewEditStudent" );
 	$success = 'success';
 	$error = 'error';
 
@@ -174,6 +201,32 @@
                     {
                         $('#viewStudentModal .modal-body').html(json.retMessage);
                         $('#viewStudentModal').modal();
+                    }
+                    else if(json.retVal == '{$error}')
+                    {
+                        $.notify(json.retMessage, json.retVal);
+                    }
+                }
+            })
+        });
+		
+        $(document).on('click', '.edit_btn', function(){
+            var values = {
+              'student' : $(this).attr('ref'),
+            }
+
+            $.ajax({
+                type        : 'POST', 
+                url         : '{$view_edit}',
+                data        : values,
+                cache       : false,
+                success     : function( data ) {
+                    var json = $.parseJSON( data );
+
+                    if(json.retVal == '{$success}')
+                    {
+                        $('#ViewEditStudentModal .modal-body').html(json.retMessage);
+                        $('#ViewEditStudentModal').modal();
                     }
                     else if(json.retVal == '{$error}')
                     {

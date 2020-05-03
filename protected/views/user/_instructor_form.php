@@ -29,6 +29,11 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
+<?php echo $form->passwordFieldGroup($vm->user, 'checkpassword', array(
+	'widgetOptions' => array(
+		'htmlOptions' => array('autocomplete'=>"off")
+	)
+)); ?>
 <hr/>
 <?php echo $form->textFieldGroup($vm->user, 'firstname', array(
 	'widgetOptions' => array(
@@ -45,14 +50,14 @@
 		'htmlOptions' => array('autocomplete'=>"off")
 	)
 )); ?>
-<?php echo $form->numberFieldGroup($vm->user, 'age', array(
-	'widgetOptions' => array(
-		'htmlOptions' => array('autocomplete'=>"off")
-	),
-	'wrapperHtmlOptions' => array(
-		'class' => 'col-sm-3'
-	),
-)); ?>
+<?php echo $form->datePickerGroup(
+    $vm->user,
+    'birthday',
+    array(
+        'prepend' => '<i class="glyphicon glyphicon-calendar"></i>'
+    )
+); ?>
+
 <?php echo $form->dropDownListGroup(
 	$vm->user,
 	'gender',

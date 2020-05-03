@@ -39,14 +39,32 @@ class MaintenanceController extends Controller
 					'Editsubject',
 					'ViewDsubject',
 					'deletesubject',
+					'SaveUsername',
+					'ChangePassword',
                 ),
 				'roles'=>array('Admin'),
+			),
+						
+			array('allow', 
+				'actions'=>array(
+					'SaveUsername',
+					'ChangePassword',
+                ),
+				'roles'=>array('Student'),
+			),
+			array('allow', 
+				'actions'=>array(
+					'SaveUsername',
+					'ChangePassword',
+                ),
+				'roles'=>array('Instructor'),
 			),
 			
 			array('deny',  // deny all other users
 				'users'=>array('*'),
 			),
 		);
+		
 	}
 	//course controller
 	public function actionCourse()
@@ -398,9 +416,9 @@ class MaintenanceController extends Controller
 			if(trim($vm->subject->description) != '')
 			{
 				$findsubject = Subject::model()->findByAttributes(array('description' => $vm->subject->description));
-				if(!isset($findsubject))
+				if(isset($findsubject))
 				{
-					$vm->editsubject->description = $vm->subject->description;
+					$vm->editsubject->attributes =$_POST['Subject'];
 					
 					if($vm->editsubject->save())
 					{
@@ -803,10 +821,7 @@ class MaintenanceController extends Controller
 		{
 			$vm->room->attributes = $_POST['Room'];
 			$vm->editroom =  room::model()->findByAttributes(array('id' => $vm->room->id));
-			
-			
-			
-			
+
 			if(trim($vm->room->description) != '')
 			{
 				$findroom = Room::model()->findByAttributes(array('description' => $vm->room->description));
@@ -873,5 +888,106 @@ class MaintenanceController extends Controller
 			));
 	}
 
+		//profile
+	public function actionChangePassword()
+	{			
+		$vm = (object) array();
+		
+		$vm->user = new User('search');
+		
+		$retVal = "error";
+		$retMessage = "Error";
+		
+		if(isset($_POST['User']))
+		{
+			$vm->user->attributes = $_POST['User'];
+			$vm->editpassword =  Users::model()->findByAttributes(array('id' => $vm->user->id));
+
+			if(trim($vm->user->password) != '' && trim($vm->user->checkpassword) != '')
+			{
+				 // $findroom = Users::model()->findByAttributes(array('description' => $vm->user->description));
+				 if($vm->user->password == $vm->user->checkpassword)
+				 {
+					$vm->editpassword->password = $vm->user->password;
+					
+					if($vm->editpassword->save())
+					{
+						$retVal = "success";
+						$retMessage = "Password Has Been Changed";	
+						
+					}
+					else
+					{
+						$retMessage = "Unable To Changed Password";
+						print_r($vm->editpassword->getErrors());
+					}
+				}
+				else
+				{
+					$retMessage = "Password does not match";
+				}
+			}
+			else
+			{
+				$retMessage = "Please Fill Up Required Fields";
+			}
+		}
+		$this->renderPartial('/json/json_ret', 
+			array(
+				'retVal' => $retVal,
+				'retMessage' => $retMessage,
+			));
+	}	
+	
+	
+	public function actionSaveUsername()
+	{
+		if(isset($_POST['value']) && isset($_POST['pk']))
+		{
+			$findUser = Users::model()->findByPk($_POST['pk']);
+			if(isset($findUser))
+			{
+				if ($_POST['name'] == 'username' )
+				{
+				
+				$findUser->username = $_POST['value'];
+				}
+				
+				if ($_POST['name'] == 'email' )
+				{
+				$findUser->email = $_POST['value'];
+				}	
+
+				if ($_POST['name'] == 'firstname' )
+				{
+				$findUser->firstname = $_POST['value'];
+				}
+				
+				if ($_POST['name'] == 'middlename' )
+				{
+				$findUser->middlename = $_POST['value'];
+				}	
+				
+				if ($_POST['name'] == 'surname' )
+				{
+				$findUser->surname = $_POST['value'];
+				}	
+
+				if ($_POST['name'] == 'contact_no' )
+				{
+				$findUser->contact_no = $_POST['value'];
+				}
+				
+				
+				
+				$findUser->save(); 
+				// print_r($findUser->getErrors());
+				
+			}
+
+		}
+	}
+	
+	
 
 }

@@ -37,7 +37,7 @@ class UserCourse extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user, course, sy', 'required'),
+			array('user, course', 'required'),
 			array('user, course, sy', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

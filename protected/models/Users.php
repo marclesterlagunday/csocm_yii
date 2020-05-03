@@ -16,7 +16,7 @@
  * @property string $gender
  * @property string $contact_no
  */
-class User extends CActiveRecord
+class Users extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -44,14 +44,14 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, email, firstname, middlename, surname, gender, contact_no, checkpassword', 'required'),
+			// array('username, password, email, firstname, middlename, surname, age, gender, contact_no', 'required'),
 			array('', 'numerical', 'integerOnly'=>true),
 			array('id', 'length', 'max'=>36),
 			array('username, password, email', 'length', 'max'=>128),
 			array('firstname, surname', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, username, password, email, profile_pic, firstname, surname,checkpassword, birthday', 'safe', 'on'=>'search'),
+			array('id, username, password, email, profile_pic, firstname, surname,checkpassword', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,8 +85,7 @@ class User extends CActiveRecord
 			'age' => 'Age',
 			'gender' => 'Gender',
 			'contact_no' => 'Contact No',
-			'checkpassword' => 'Retype Password',
-			'birthday' => 'Birthdate',
+			'checkpassword' => 'retype',
 		);
 	}
 
